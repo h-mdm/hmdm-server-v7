@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "vscode-server-connector",
+      "request": "launch",
+      "name": "Run Tomcat 11",
+      "serverId": "apache-tomcat-11.0.0-M6",
+      "env": {
+        "DEFAULT_SQL_HOST": "localhost",
+        "DEFAULT_SQL_PORT": "5432",
+        "DEFAULT_SQL_BASE": "hmdm",
+        "DEFAULT_SQL_USER": "myuser",
+        "DEFAULT_SQL_PASS": "mypassword",
+        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk"
+      }
+    }
+  ]
+}

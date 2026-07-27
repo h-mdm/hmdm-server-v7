@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~ Headwind MDM: Open Source Android MDM Software
+  ~ https://h-mdm.com
+  ~
+  ~ Copyright (C) 2019 Headwind Solutions LLC (http://h-sms.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>server</artifactId>
+    <packaging>war</packaging>
+    <version>7.0.1</version>
+    <name>MDM Server</name>
+
+    <parent>
+        <groupId>com.hmdm</groupId>
+        <artifactId>root</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.github.kenglxn.qrgen</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hmdm</groupId>
+            <artifactId>common</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hmdm</groupId>
+            <artifactId>notification</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hmdm</groupId>
+            <artifactId>jwt</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+
+        <!-- The formatting of these lines must be kept as is - a single line -->
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>audit</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>deviceinfo</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>devicelog</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>messaging</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>push</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+        <dependency><groupId>com.hmdm.plugin</groupId><artifactId>xtra</artifactId><version>0.1.0</version><scope>runtime</scope></dependency>
+
+        <dependency>
+            <groupId>com.hmdm.plugin</groupId>
+            <artifactId>platform</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <finalName>launcher</finalName>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <filters>
+                                <filter>build.properties</filter>
+                            </filters>
+                            <resources>
+                                <resource>
+                                    <directory>conf</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>            
+
+                    <!-- Prepare the app version -->
+                    <execution>
+                        <id>prepare-version</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>app.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!-- Tomcat 7 can't be used with v6 any more - we use Tomcat11 IDEA plugin -->
+            <!-- <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/</path>
+                    <port>9090</port>
+                    <contextFile>target/context.xml</contextFile>
+                </configuration>
+            </plugin> -->
+
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>clean-webtarget-before</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete dir="${basedir}/src/main/web/node_modules/.cache/native-federation" failonerror="false"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-dist-to-launcher</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy todir="${basedir}/target/launcher">
+                                    <fileset dir="${basedir}/src/main/web/dist/core/browser"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-webxml-to-launcher</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy todir="${basedir}/target/launcher/WEB-INF">
+                                    <fileset dir="${basedir}/src/main/web/WEB-INF"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Extract plugin resources from JARs -->
+            <!-- Uncomment this to use plugins as JARs -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <version>3.6.1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>unpack-plugin-resources</id>-->
+<!--                        <phase>prepare-package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>unpack-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <includeGroupIds>com.hmdm.plugin</includeGroupIds>-->
+<!--                            <includeArtifactIds>audit</includeArtifactIds>-->
+<!--                            <includes>META-INF/resources/**</includes>-->
+<!--                            <outputDirectory>${basedir}/target/plugin-resources</outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+            
+            <!-- Copy extracted plugin resources to WAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-plugin-frontend</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy todir="${basedir}/target/launcher" failonerror="false">
+                                    <fileset dir="${basedir}/target/plugin-resources/META-INF/resources"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>frontend</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.15.1</version>
+
+                        <configuration>
+                            <workingDirectory>src/main/web</workingDirectory>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v22.17.0</nodeVersion>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>install pnpm</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install -g pnpm</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>pnpm install</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>exec pnpm install</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>build web</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>exec pnpm run build
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.6.1</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src/main/web/dist</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

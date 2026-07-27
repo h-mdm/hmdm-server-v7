@@ -1,0 +1,48 @@
+<div class="cell">
+  @if (isShowVersions()) {
+    <div
+      *hmdmHasPermission="'edit_applications'"
+      class="cell-action"
+      matTooltip="{{ 'breadcrumb.application.versions' | translate }}"
+      [matTooltipShowDelay]="500"
+    >
+      <button matIconButton (click)="onVersionClick()">
+        <mat-icon>layers</mat-icon>
+      </button>
+    </div>
+  }
+
+  <div
+    class="cell-action"
+    *hmdmHasPermission="'edit_applications'"
+    matTooltip="{{ 'button.set.configurations' | translate }}"
+  >
+    <button matIconButton (click)="onConfigClick()">
+      <mat-icon>list</mat-icon>
+    </button>
+  </div>
+
+  <div
+    class="cell-action"
+    *hmdmHasPermission="'edit_applications'"
+    matTooltip="{{ 'button.edit' | translate }}"
+  >
+    <button matIconButton (click)="onEditClick()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+
+  <div
+    *hmdmHasPermission="'edit_applications'"
+    class="cell-action"
+    matTooltip="{{
+      (isDeleteDisabled() ? 'error.application.config.reference.exists' : 'button.delete')
+        | translate
+    }}"
+    [matTooltipShowDelay]="500"
+  >
+    <button matIconButton (click)="onDeleteClick()" [disabled]="isDeleteDisabled()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>

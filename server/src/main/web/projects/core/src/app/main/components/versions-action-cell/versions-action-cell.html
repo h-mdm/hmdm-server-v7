@@ -1,0 +1,21 @@
+<div class="cell">
+  <button
+    mat-icon-button
+    *hmdmHasPermission="'edit_application_versions'"
+    (click)="onConfigClick()"
+  >
+    <mat-icon>list</mat-icon>
+  </button>
+
+  <button mat-icon-button *hmdmHasPermission="'edit_application_versions'" (click)="onEditClick()">
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    *hmdmHasPermission="'edit_application_versions'"
+    (click)="onDeleteClick()"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
