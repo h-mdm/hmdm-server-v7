@@ -367,11 +367,15 @@ If you encounter CORS (Cross-Origin Resource Sharing) issues when the core appli
 
 To bypass CORS issues in development, you can use a browser extension like "Allow CORS: Access-Control-Allow-Origin" for Chrome or Firefox. Enable the extension while working on the project to allow cross-origin requests.
 
-Alternatively you can run browser with web security disabled (not recommended for regular use):
+Alternatively, you can run a browser instance with web security disabled. To separate it from the standard instance, use a different user data directory.
 
 ##### 4.3.1.1 Windows
 
-To run Chrome on Windows with CORS ignored, create a desktop shortcut that launches Chrome with the command-line flags --disable-web-security --user-data-dir. Right-click the desktop, select New > Shortcut, and enter the following as the location, replacing the Chrome path with your own: chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security
+To run Chrome on Windows with CORS ignored, create a desktop shortcut that launches Chrome with the command-line flags --disable-web-security --user-data-dir. Right-click the desktop, select New > Shortcut, and enter the following as the location, replacing the Chrome path with your own: chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security. Or run the following command in the console:
+
+```bash
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\Windows\temp\ChromeDev"
+```
 
 ##### 4.3.1.2 Linux
 
