@@ -1,8 +1,8 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpContext, HttpHeaders} from '@angular/common/http';
 import {TPluginLicenseKey} from '../types/plugin-license-key.type';
 import {catchError, forkJoin, map, Observable, of, shareReplay, tap} from 'rxjs';
-import {THttpResponse} from 'hmdm-ui-kit';
+import {SKIP_ALERT, THttpResponse} from 'hmdm-ui-kit';
 
 @Injectable({providedIn: 'root'})
 export class LicenseService {
@@ -27,7 +27,10 @@ export class LicenseService {
   }
 
   getPluginLicenseKey(): Observable<TPluginLicenseKey> {
-    return this.http.get<THttpResponse<TPluginLicenseKey>>(this.pluginLicenseKeyUrl)
+    return this.http.get<THttpResponse<TPluginLicenseKey>>(this.pluginLicenseKeyUrl,
+    {
+      context: new HttpContext().set(SKIP_ALERT, true),
+    })
       .pipe(map(v => v.data));
   }
 
