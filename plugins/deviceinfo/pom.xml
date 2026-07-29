@@ -29,7 +29,7 @@
 
     <packaging>jar</packaging>
     <version>0.1.0</version>
-    <name>Device Log Plugin for MDM Server</name>
+    <name>Device Info Plugin for MDM Server</name>
 
     <parent>
         <groupId>com.hmdm.plugin</groupId>
