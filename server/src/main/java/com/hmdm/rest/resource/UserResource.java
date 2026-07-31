@@ -145,6 +145,7 @@ public class UserResource {
         return SecurityContext.get().getCurrentUser().map(u -> {
             User userDetails = userDAO.getUserDetails(u.getId());
             userDetails.setPassword(null);
+            userDetails.setSingleCustomer(unsecureDAO.isSingleCustomer());
 
             return Response.OK(userDetails);
         }).orElse(Response.OK(null));
