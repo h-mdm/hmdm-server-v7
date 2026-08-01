@@ -93,6 +93,8 @@ public class SettingsResource {
             settings.setSingleCustomer(unsecureDAO.isSingleCustomer());
             if (!settings.isSingleCustomer()) {
                 this.commonDAO.loadCustomerSettings(settings);
+            } else {
+                this.commonDAO.loadTotalDeviceCount(settings);
             }
             return Response.OK(settings);
         } catch (Exception e) {
