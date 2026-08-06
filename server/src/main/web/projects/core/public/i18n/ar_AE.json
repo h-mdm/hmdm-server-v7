@@ -32,6 +32,7 @@
   "table.license.validity.tick": "علامة الصلاحية",
   "table.license.purchase.link": "رابط الشراء",
   "license.parsing.error": "خطأ في تحليل الترخيص",
+  "license.delete.confirmation.title": "هل تريد حذف الترخيص؟",
   "table.license.valid": "صالح",
   "alerts.table.date.and.time": "التاريخ والوقت",
 

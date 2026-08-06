@@ -5,6 +5,9 @@ import {TLicensesRestDTO} from '../../types/licenses-rest-dto.type';
 import {HasPermissionDirective} from '../../../shared/directives/has-permission.directive';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
+import {filter, take} from 'rxjs';
+import {LicenseDeletionConfirmationDialog} from '../license-deletion-confirmation-dialog/license-deletion-confirmation-dialog';
 
 @Component({
   selector: 'core-licenses-action-cell',
@@ -18,6 +21,7 @@ import {MatIconButton} from '@angular/material/button';
 })
 export class LicensesActionCell extends BaseCellRenderer<TLicensesRestDTO> {
   private readonly licensesService = inject(LicensesRestService);
+  private readonly dialog = inject(MatDialog);
 
   onDeleteClick(): void {
     const license = this.params().data;
@@ -26,6 +30,14 @@ export class LicensesActionCell extends BaseCellRenderer<TLicensesRestDTO> {
       return;
     }
 
-    this.licensesService.deleteLicense(license.id);
+    this.dialog
+      .open(LicenseDeletionConfirmationDialog, {
+        width: '450px'
+      })
+      .afterClosed()
+      .pipe(take(1), filter(Boolean))
+      .subscribe(() => {
+        this.licensesService.deleteLicense(license.id);
+      });
   }
 }

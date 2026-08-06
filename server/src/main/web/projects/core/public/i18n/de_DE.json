@@ -32,6 +32,7 @@
   "table.license.validity.tick": "Gültigkeitshäkchen",
   "table.license.purchase.link": "Kauf-Link",
   "license.parsing.error": "Fehler beim Parsen der Lizenz",
+  "license.delete.confirmation.title": "Lizenz löschen?",
   "table.license.valid": "Gültig",
   "alerts.table.date.and.time": "Datum und Uhrzeit",
 

@@ -32,6 +32,7 @@
   "table.license.validity.tick": "Coche de validité",
   "table.license.purchase.link": "Lien d'achat",
   "license.parsing.error": "Erreur d'analyse de la licence",
+  "license.delete.confirmation.title": "Supprimer la licence?",
   "table.license.valid": "Valide",
   "alerts.table.date.and.time": "Date et heure",
 

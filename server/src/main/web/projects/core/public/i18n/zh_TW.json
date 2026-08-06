@@ -32,6 +32,7 @@
   "table.license.validity.tick": "有效性勾選",
   "table.license.purchase.link": "購買連結",
   "license.parsing.error": "授權解析錯誤",
+  "license.delete.confirmation.title": "刪除授權？",
   "table.license.valid": "有效",
   "alerts.table.date.and.time": "日期與時間",
 

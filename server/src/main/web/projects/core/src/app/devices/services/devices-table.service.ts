@@ -7,6 +7,7 @@ import { DevicesFormDialog } from '../components/devices-form-dialog/devices-for
 import { TDevice } from '../types/device.type';
 import { DevicesFacadeService } from './devices-facade.service';
 import { SettingsFacadeService } from '../../shared/services/settings-facade.service';
+import { LicenseService } from '../../auth/services/license.service';
 
 @Injectable({ providedIn: 'root' })
 export class DevicesTableService {
@@ -14,6 +15,7 @@ export class DevicesTableService {
   private readonly deviceFacadeService = inject(DevicesFacadeService);
   private readonly deviceService = inject(DevicesService);
   private readonly settingsFacadeService = inject(SettingsFacadeService);
+  private readonly licenseService = inject(LicenseService);
 
   openEditDialog(device: TDevice): void {
     const id = device.id;
@@ -57,6 +59,7 @@ export class DevicesTableService {
           .subscribe(() => {
             this.deviceFacadeService.searchDevices({ force: true });
             this.settingsFacadeService.fetchSettings().subscribe();
+            this.licenseService.refreshLicenses();
           }),
       );
   }

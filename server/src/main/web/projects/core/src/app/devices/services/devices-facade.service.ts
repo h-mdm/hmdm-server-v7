@@ -28,7 +28,7 @@ import { DEVICES_SORT_MAPPER } from '../const/devices-sort-mapper.const';
 import { TConfiguration } from '../types/configuration.type';
 import { TDeviceFormValue } from '../types/device-form-value.type';
 import { TSearchDevicesFormValue } from '../types/search-devices-form-value.type';
-import { SnackBarService } from '../../shared/services/snack-bar.service';
+import { LicenseService } from '../../auth/services/license.service';
 
 @Injectable({ providedIn: 'root' })
 export class DevicesFacadeService {
@@ -39,6 +39,7 @@ export class DevicesFacadeService {
   private readonly userService = inject(UserStateService);
   private readonly settingsService = inject(DevicesSettingsFacadeService);
   private readonly settingsFacadeService = inject(SettingsFacadeService);
+  private readonly licenseService = inject(LicenseService);
 
   private readonly SORT_MAPPER: Record<string, string> = DEVICES_SORT_MAPPER;
   private readonly _data: WritableSignal<any[]> = signal([]);
@@ -82,6 +83,8 @@ export class DevicesFacadeService {
         }
 
         this.fetchDeviceSettings();
+      } else {
+        this.isLoadingSettings.set(false);
       }
     });
   }
@@ -151,6 +154,7 @@ export class DevicesFacadeService {
       .subscribe(() => {
         this.forceSearchDevices();
         this.settingsFacadeService.fetchSettings().subscribe();
+        this.licenseService.refreshLicenses();
       });
   }
 
@@ -208,6 +212,7 @@ export class DevicesFacadeService {
       .subscribe(() => {
         this.forceSearchDevices();
         this.settingsFacadeService.fetchSettings().subscribe();
+        this.licenseService.refreshLicenses();
       });
   }
 

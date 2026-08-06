@@ -32,6 +32,7 @@
   "table.license.validity.tick": "有効性チェック",
   "table.license.purchase.link": "購入リンク",
   "license.parsing.error": "ライセンスの解析エラー",
+  "license.delete.confirmation.title": "ライセンスを削除しますか?",
   "table.license.valid": "有効",
   "alerts.table.date.and.time": "日時",
 

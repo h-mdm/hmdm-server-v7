@@ -32,6 +32,7 @@
   "table.license.validity.tick": "Галочка валидности",
   "table.license.purchase.link": "Ссылка на покупку",
   "license.parsing.error": "Ошибка синтаксического анализа лицензии",
+  "license.delete.confirmation.title": "Удалить лицензию?",
   "table.license.valid": "Действителен",
   "alerts.table.date.and.time": "Дата и время",
 

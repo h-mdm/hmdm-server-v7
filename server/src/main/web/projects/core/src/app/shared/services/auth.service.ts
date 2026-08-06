@@ -177,6 +177,7 @@ export class AuthService {
         this.authStateService.pendingPasswordReset.next(null);
       }),
       switchMap(() => this.init()),
+      switchMap(() => this.getCurrentUser()),
       tap(() => {
         this.router.navigate(['/home']);
       }),

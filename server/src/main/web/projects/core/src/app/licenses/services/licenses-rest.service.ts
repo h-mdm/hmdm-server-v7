@@ -2,10 +2,13 @@ import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {TLicensesRestAPI, TLicensesRestDTO} from '../types/licenses-rest-dto.type';
 import {finalize, map, take} from 'rxjs';
+import {LicenseService} from '../../auth/services/license.service';
+import {THttpResponse} from 'hmdm-ui-kit';
 
 @Injectable({providedIn: 'root'})
 export class LicensesRestService {
   private readonly http = inject(HttpClient);
+  private readonly licenseService = inject(LicenseService);
   private readonly licensesRestUrl = 'rest/private/plugin/license';
 
   private _licensesData: WritableSignal<TLicensesRestDTO[]> = signal<TLicensesRestDTO[]>([]);
@@ -30,10 +33,13 @@ export class LicensesRestService {
   }
 
   deleteLicense(licenseId: number) {
-    this.http.delete(`${this.licensesRestUrl}/${licenseId}`)
+    this.http.delete<THttpResponse<any>>(`${this.licensesRestUrl}/${licenseId}`)
     .subscribe({
       next: (value) => {
-        this.getLicensesData();
+        if (value.status !== "ERROR") {
+          this.getLicensesData();
+          this.licenseService.refreshLicenses();
+        }
       }
     });
   }
@@ -43,7 +49,10 @@ export class LicensesRestService {
     this.http.put<TLicensesRestAPI>(this.licensesRestUrl, key, {headers})
     .subscribe({
       next: (value) => {
-        this.getLicensesData();
+        if (value.status !== "ERROR") {
+          this.getLicensesData();
+          this.licenseService.refreshLicenses();
+        }
       }
     });
   }

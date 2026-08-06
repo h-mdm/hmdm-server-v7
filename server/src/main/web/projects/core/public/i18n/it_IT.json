@@ -32,6 +32,7 @@
   "table.license.validity.tick": "Spunta di validità",
   "table.license.purchase.link": "Link di acquisto",
   "license.parsing.error": "Erreur di analisi della licenza",
+  "license.delete.confirmation.title": "Eliminare la licenza?",
   "table.license.valid": "Valido",
   "alerts.table.date.and.time": "Data e ora",
 

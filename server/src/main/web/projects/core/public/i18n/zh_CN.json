@@ -32,6 +32,7 @@
   "table.license.validity.tick": "有效性勾选",
   "table.license.purchase.link": "购买链接",
   "license.parsing.error": "许可证解析错误",
+  "license.delete.confirmation.title": "删除许可证？",
   "table.license.valid": "有效",
   "alerts.table.date.and.time": "日期和时间",
 

@@ -34,6 +34,7 @@
   "table.license.validity.tick": "Validity Tick",
   "table.license.purchase.link": "Purchase Link",
   "license.parsing.error": "License parsing error",
+  "license.delete.confirmation.title": "Delete the license?",
   "table.license.valid": "Valid",
   "alerts.table.date.and.time": "Date and Time",
 

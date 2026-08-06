@@ -1,7 +1,7 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpContext, HttpHeaders} from '@angular/common/http';
 import {TPluginLicenseKey} from '../types/plugin-license-key.type';
-import {catchError, forkJoin, map, Observable, of, shareReplay, tap} from 'rxjs';
+import {catchError, forkJoin, map, Observable, of, shareReplay, take, tap} from 'rxjs';
 import {SKIP_ALERT, THttpResponse} from 'hmdm-ui-kit';
 
 @Injectable({providedIn: 'root'})
@@ -26,12 +26,15 @@ export class LicenseService {
     return `rest/private/plugin-${plugin}/license`;
   }
 
-  getPluginLicenseKey(): Observable<TPluginLicenseKey> {
+  private fetchPluginLicenseKey(): Observable<THttpResponse<TPluginLicenseKey>> {
     return this.http.get<THttpResponse<TPluginLicenseKey>>(this.pluginLicenseKeyUrl,
     {
       context: new HttpContext().set(SKIP_ALERT, true),
-    })
-      .pipe(map(v => v.data));
+    });
+  }
+
+  getPluginLicenseKey(): Observable<TPluginLicenseKey> {
+    return this.fetchPluginLicenseKey().pipe(map(v => v.data));
   }
 
   putPluginLicenseKey(key: string): Observable<TPluginLicenseKey> {
@@ -61,5 +64,18 @@ export class LicenseService {
     }
 
     return this.validPluginLicenses$;
+  }
+
+  refreshLicenses(): void {
+    this.validPluginLicenses$ = null;
+    this.getValidPluginLicenses().pipe(take(1)).subscribe();
+
+    this.fetchPluginLicenseKey()
+      .pipe(take(1))
+      .subscribe((response) => {
+        if (response.status !== 'ERROR') {
+          this.pluginLicenseKeyData.set(response.data);
+        }
+      });
   }
 }
