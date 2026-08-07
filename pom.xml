@@ -536,6 +536,39 @@
 
         <plugins>
             <plugin>
+			    <!-- Early check files existence -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.2</version>
+                <inherited>false</inherited>
+
+                <executions>
+                    <execution>
+                        <id>check-build-properties</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireFilesExist>
+                                    <files>
+                                        <file>${project.basedir}/server/build.properties</file>
+                                        <file>${project.basedir}/plugins/audit/build.properties</file>
+                                    </files>
+                                    <message>
+                                        Missing build.properties files.
+                                        Create them with:
+                                        cp server/build.properties.example server/build.properties
+                                        cp plugins/audit/build.properties.example plugins/audit/build.properties
+                                    </message>
+                                </requireFilesExist>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
