@@ -23,7 +23,7 @@
   "private": true,
   "dependencies": {
     "@angular-architects/module-federation": "^20.0.0",
-    "@angular-architects/native-federation": "^20.1.6",
+    "@angular-architects/native-federation": "^20.3.1",
     "@angular/animations": "20.3.15",
     "@angular/cdk": "20.2.14",
     "@angular/common": "20.3.15",

@@ -53,6 +53,40 @@
 
     <build>
         <plugins>
+            <!-- Check whether front-end files are changes and the front-end should be rebuilt -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+
+                <executions>
+                    <execution>
+                        <id>check-web-build</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <exportAntProperties>true</exportAntProperties>
+                            <target>
+                                <uptodate
+                                        property="web.build.uptodate"
+                                        targetfile="${project.basedir}/src/main/web/dist/devicelog">
+                                    <srcfiles dir="${project.basedir}/src/main/web/projects/devicelog">
+                                        <include name="**/*"/>
+                                        <exclude name="tsconfig.federation.json"/>
+                                    </srcfiles>
+                                </uptodate>
+                                <condition property="skip.web.build" value="true" else="false">
+                                    <isset property="web.build.uptodate"/>
+                                </condition>
+                                <echo message="skip.web.build=${skip.web.build}"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -154,8 +188,57 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
 
+            <!-- Build Angular Native Federation Remote in webtarget -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.1</version>
+                <configuration>
+                    <skip>${skip.web.build}</skip>
+                    <workingDirectory>${project.basedir}/src/main/web</workingDirectory>
+                    <installDirectory>${project.basedir}/target</installDirectory>
+                </configuration>
+                <executions>
+                    <!-- Install Node.js and pnpm -->
+                    <execution>
+                        <id>install node and pnpm</id>
+                        <goals>
+                            <goal>install-node-and-pnpm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <nodeVersion>v22.12.0</nodeVersion>
+                            <pnpmVersion>9.15.0</pnpmVersion>
+                        </configuration>
+                    </execution>
+
+                    <!-- Install dependencies -->
+                    <execution>
+                        <id>pnpm install</id>
+                        <goals>
+                            <goal>pnpm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- Build Angular app for production -->
+                    <execution>
+                        <id>pnpm run build</id>
+                        <goals>
+                            <goal>pnpm</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
     </build>
 
@@ -164,55 +247,6 @@
             <id>frontend</id>
             <build>
                 <plugins>
-                    <!-- Build Angular Native Federation Remote in webtarget -->
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.15.1</version>
-                        <configuration>
-                            <workingDirectory>${project.basedir}/src/main/web</workingDirectory>
-                            <installDirectory>${project.basedir}/target</installDirectory>
-                        </configuration>
-                        <executions>
-                            <!-- Install Node.js and pnpm -->
-                            <execution>
-                                <id>install node and pnpm</id>
-                                <goals>
-                                    <goal>install-node-and-pnpm</goal>
-                                </goals>
-                                <phase>generate-resources</phase>
-                                <configuration>
-                                    <nodeVersion>v22.12.0</nodeVersion>
-                                    <pnpmVersion>9.15.0</pnpmVersion>
-                                </configuration>
-                            </execution>
-
-                            <!-- Install dependencies -->
-                            <execution>
-                                <id>pnpm install</id>
-                                <goals>
-                                    <goal>pnpm</goal>
-                                </goals>
-                                <phase>generate-resources</phase>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-
-                            <!-- Build Angular app for production -->
-                            <execution>
-                                <id>pnpm run build</id>
-                                <goals>
-                                    <goal>pnpm</goal>
-                                </goals>
-                                <phase>compile</phase>
-                                <configuration>
-                                    <arguments>run build</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
                         <version>2.6.1</version>
@@ -224,7 +258,6 @@
                             </filesets>
                         </configuration>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>
