@@ -273,14 +273,6 @@ The following ports are currently allocated for development:
 | Logs Plugin                 | 4203  | http://localhost:4203     |
 | Detailed Information Plugin | 4204  | http://localhost:4204     |
 | Push Messages Plugin        | 4205  | http://localhost:4205     |
-| Reboot, Lock, Reset Plugin  | 4206  | http://localhost:4206     |
-| Location                    | 4207  | http://localhost:4207     |
-| Photo                       | 4208  | http://localhost:4208     |
-| Contacts                    | 4210  | http://localhost:4210     |
-| OpenVPN                     | 4211  | http://localhost:4211     |
-| DeviceExport                | 4212  | http://localhost:4212     |
-| Import                      | 4212  | http://localhost:4212     |
-| Two Factor                  | 4215  | http://localhost:4215     |
 | More Plugins                | 4216  | http://localhost:4216     |
 | _{Your New Plugin}_         | _TBD_ | _http://localhost:{port}_ |
 
@@ -426,12 +418,13 @@ Replace `/path/to/dump.sql` with the actual path to your SQL dump file on the ho
 To work with the frontend, a running backend is required. From the project root, run:
 
 ```bash
-   git clone -b v6-web-setup git@gitlab.com:headwind/android-kiosk-web.git
-   cd android-kiosk-web
-   cp application.properties.example application.properties
+   git clone https://github.com/h-mdm/hmdm-server-v7
+   cd hmdm-server-v7
+   cp server/build.properties.example server/build.properties
+   cp plugins/audit/build.properties.example plugins/audit/build.properties
 ```
 
-Navigate to application.properties and set up your database connection details.
+Navigate to build.properties and set up your database connection details.
 
 ```bash
    mvn clean install
@@ -668,4 +661,4 @@ The core application's `pom.xml` builds the main WAR file, which includes the co
 
 ---
 
-**Last Updated:** April 2026
+**Last Updated:** August 2026
