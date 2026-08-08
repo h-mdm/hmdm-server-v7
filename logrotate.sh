@@ -2,10 +2,10 @@
 #
 # Weekly log rotation utility for Headwind MDM
 #
-BASE_DIR=/var/lib/tomcat9
+TOMCAT_HOME=$(ls -d /var/lib/tomcat* | tail -n1)
 
-find $BASE_DIR/work/logs -name "hmdm.log.*" -mtime +7 -exec rm {} \;
-find $BASE_DIR/work/logs -name "audit.log.*" -mtime +7 -exec rm {} \;
+find $TOMCAT_HOME/work/logs -name "hmdm.log.*" -mtime +7 -exec rm {} \;
+find $TOMCAT_HOME/work/logs -name "audit.log.*" -mtime +7 -exec rm {} \;
 
 # Uncomment if you need to rotate catalina.out as well
 #rm $BASE_DIR/catalina.out.1
