@@ -285,7 +285,12 @@ if [ -d $TOMCAT_HOME/webapps/$TOMCAT_DEPLOY_PATH ]; then
 fi
 
 echo "Copying required libraries to $TOMCAT_HOME/lib ..."
-cp ./lib/* $TOMCAT_HOME/lib
+if [ -d "./target/shared-libs" ]; then
+    LIB_DIR=./target/shared-libs
+else
+    LIB_DIR=./lib
+fi
+cp $LIB_DIR/* $TOMCAT_HOME/lib
 # Restart to load new libraries
 service $TOMCAT_SERVICE restart
 sleep 5
