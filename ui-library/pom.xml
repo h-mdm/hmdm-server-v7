@@ -40,6 +40,38 @@
 
     <build>
         <plugins>
+            <!-- Check whether front-end files are changes and the front-end should be rebuilt -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+
+                <executions>
+                    <execution>
+                        <id>check-web-build</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <exportAntProperties>true</exportAntProperties>
+                            <target>
+                                <uptodate
+                                        property="web.build.uptodate"
+                                        targetfile="${project.basedir}/../server/src/main/web/dist/hmdm-ui-kit">
+                                    <srcfiles dir="${project.basedir}/../server/src/main/web/projects/hmdm-ui-kit">
+                                        <include name="**/*"/>
+                                    </srcfiles>
+                                </uptodate>
+                                <condition property="skip.web.build" value="true" else="false">
+                                    <isset property="web.build.uptodate"/>
+                                </condition>
+                                <echo message="skip.web.build=${skip.web.build}"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Build Angular UI Library -->
             <plugin>
@@ -48,6 +80,7 @@
                 <version>1.15.1</version>
 
                 <configuration>
+                    <skip>${skip.web.build}</skip>
                     <workingDirectory>${project.basedir}/../server/src/main/web</workingDirectory>
                     <installDirectory>${project.basedir}/../server/src/main/web</installDirectory>
                 </configuration>
