@@ -427,6 +427,10 @@ public class UnsecureDAO {
         return !customerMapper.isMultiTenant();
     }
 
+    public Integer getMasterCustomerId() {
+        return customerMapper.getMasterId();
+    }
+
     // This should only be called from the tasks, not from the web resource methods
     public List<Customer> getAllCustomersUnsecure() {
         return customerMapper.findAll();
