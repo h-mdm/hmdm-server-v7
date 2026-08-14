@@ -562,7 +562,7 @@ INSERT INTO configurationapplications (id, configurationid, applicationid, remov
     (472, 5, 99, false, false, 10099),
     (473, 5, 100, false, false, 10100);
     
-SELECT pg_catalog.setval('public.configurationapplications_id_seq', 472, true);
+SELECT pg_catalog.setval('public.configurationapplications_id_seq', 473, true);
 
 INSERT INTO configurationapplicationsettings (id, applicationid, name, type, value, readonly, extrefid, lastupdate) VALUES (1, 100, 'start_url', 'STRING', 'https://h-mdm.com/kiosk-demo/', false, 5, 1705991643804);
 SELECT pg_catalog.setval('public.configurationapplicationsettings_id_seq', 1, true);
