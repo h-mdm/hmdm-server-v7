@@ -586,6 +586,7 @@
   "form.application.url.title": "The URL should be typed in only if your app is hosted on an external resource. It is recommended to upload an APK file by using a field below.",
   "form.application.url.disabled": "URL is set up for each version. To change the URL, close this window and click the 'Versions' icon.",
   "form.application.file": "File",
+  "form.application.file.processing": "Processing the file on the server...",
   "form.application.auto.update": "Auto Update",
   "form.application.auto.update.title": "Set this flag to update all configurations where the app is installed. Use only if you are 100% sure the app is stable.",
   "form.application.showLabel": "Show Icon",

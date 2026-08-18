@@ -13,6 +13,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { BaseComponent, MatButtonModule, Selector, TranslatePipe } from 'hmdm-ui-kit';
 import { APPLICATION_TYPE_OPTIONS } from '../../const/application-type-options.const';
+import { ICON_APPLICATION_TYPES } from '../../const/icon-application-types.const';
 import {
   TApplicationFormEmitValue,
   TApplicationFormValue,
@@ -23,6 +24,7 @@ import { ApplicationIconForm } from '../application-icon-form/application-icon-f
 import { SystemActionForm } from '../system-action-form/system-action-form';
 import { WebPageForm } from '../web-page-form/web-page-form';
 import { TApplicationDTO } from '../../../entity/application/types/application-dto.type';
+import { TApplicationType } from '../../../entity/application/types/application-type.type';
 
 @Component({
   selector: 'core-application-form',
@@ -52,7 +54,7 @@ export class ApplicationForm extends BaseComponent implements OnInit {
 
   typeControl = new FormControl<string | null>('app');
   typesOptions = APPLICATION_TYPE_OPTIONS;
-  type: WritableSignal<string> = signal('app');
+  type: WritableSignal<TApplicationType> = signal<TApplicationType>('app');
   initialIconValue: WritableSignal<TApplicationIconFormValue | null> =
     signal<TApplicationIconFormValue | null>(null);
 
@@ -63,7 +65,7 @@ export class ApplicationForm extends BaseComponent implements OnInit {
     if (this.initialValue()) {
       this.typeControl.setValue(this.initialValue()!.type);
       this.typeControl.disable();
-      this.type.set(this.initialValue()!.type);
+      this.type.set(this.initialValue()!.type as TApplicationType);
 
       this.initialIconValue.set({
         showIcon: !!this.initialValue()!.showIcon,
@@ -73,10 +75,21 @@ export class ApplicationForm extends BaseComponent implements OnInit {
     }
 
     this.typeControl.valueChanges.pipe(this.untilDestroyed()).subscribe(() => {
-      this.type.set(this.typeControl.value ?? 'app');
+      const type = (this.typeControl.value ?? 'app') as TApplicationType;
+
+      this.type.set(type);
       this.applicationFormValue = null;
+
+      if (ICON_APPLICATION_TYPES.includes(type)) {
+        this.iconForm()?.setShowIcon(true);
+      }
+
       this.emitFormChange();
     });
+  }
+
+  onUploadSuccess(): void {
+    this.iconForm()?.setShowIcon(true);
   }
 
   onApplicationFormChange($event: TApplicationFormValue | null): void {
@@ -106,6 +119,11 @@ export class ApplicationForm extends BaseComponent implements OnInit {
 
     const typeValue = this.typeControl.value;
     if (!typeValue) {
+      this.formChange.emit(null);
+      return;
+    }
+
+    if (this.iconForm()?.formGroup.invalid) {
       this.formChange.emit(null);
       return;
     }

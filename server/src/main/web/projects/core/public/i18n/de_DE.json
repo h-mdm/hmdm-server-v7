@@ -580,6 +580,7 @@
   "form.application.url.title": "Die URL sollte nur eingegeben werden, wenn Ihre App auf einer externen Ressource gehostet wird. Es wird empfohlen, eine APK-Datei mithilfe eines Felds unten hochzuladen.",
   "form.application.url.disabled": "Die URL wird für jede Version eingerichtet. Um die URL zu ändern, schließen Sie dieses Fenster und klicken Sie auf das Symbol \"Versionen\".",
   "form.application.file": "Datei",
+  "form.application.file.processing": "Datei wird auf dem Server verarbeitet...",
   "form.application.auto.update": "Auto-Update",
   "form.application.auto.update.title": "Setzen Sie dieses Flag, um alle Konfigurationen zu aktualisieren, in denen die App installiert ist. Nur verwenden, wenn Sie 100 % sicher sind, dass die App stabil läuft.",
   "form.application.showLabel": "Symbol anzeigen",

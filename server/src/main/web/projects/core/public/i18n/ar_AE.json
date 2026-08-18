@@ -582,6 +582,7 @@
   "form.application.auto.update": "التحديث التلقائي",
   "form.application.auto.update.title": "قم بتعيين هذه العلامة لتحديث جميع التكوينات حيث تم تثبيت التطبيق. استخدمه فقط إذا كنت متأكدًا بنسبة 100٪ أن التطبيق مستقر.",
   "form.application.file": "ملف",
+  "form.application.file.processing": "جارٍ معالجة الملف على الخادم...",
   "form.application.showLabel": "إظهار الرمز",
   "form.application.showLabel.title": "تشير هذه العلامة إلى ما إذا كان يجب عرض رمز التطبيق في المشغل. قد يتم تجاوز هذا الخيار في التكوين.",
   "form.application.use.kiosk": "افتح في Kiosk-Browser",

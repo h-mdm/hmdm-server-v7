@@ -580,6 +580,7 @@
   "form.application.url.title": "アプリが外部リソースでホストされている場合にのみ、URL を入力する必要があります。 以下のフィールドを使用して APK ファイルをアップロードすることをお勧めします。",
   "form.application.url.disabled": "URLはバージョンごとに設定されています。 URLを変更するには、このウィンドウを閉じて「バージョン」アイコンをクリックしてください。",
   "form.application.file": "ファイル",
+  "form.application.file.processing": "サーバーでファイルを処理しています...",
   "form.application.auto.update": "自動更新",
   "form.application.auto.update.title": "アプリがインストールされているすべての構成を更新するには、このフラグを設定します。 アプリが安定していることを 100% 確信している場合にのみ使用してください。",
   "form.application.showLabel": "アイコンを表示",

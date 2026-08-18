@@ -580,6 +580,7 @@
   "form.application.url.title": "仅当您的应用程式託管在外部资源上时，才应输入URL。建议通过以下字段上传APK文档。",
   "form.application.url.disabled": "为每个版本设置了URL。要更改网址，请关闭此窗口，然後点击\"版本\"图示。",
   "form.application.file": "文档",
+  "form.application.file.processing": "正在服务器上处理文件...",
   "form.application.auto.update": "自动更新",
   "form.application.auto.update.title": "设置此标志以更新安装应用程序的所有配置。 仅在您 100% 确定应用程序稳定时使用。",
   "form.application.showLabel": "显示图示",

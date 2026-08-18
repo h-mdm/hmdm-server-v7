@@ -536,6 +536,7 @@
   "form.application.url": "URL",
   "form.application.url.title": "Nếu loại là Web",
   "form.application.file": "Tệp",
+  "form.application.file.processing": "Đang xử lý tệp trên máy chủ...",
 
   "form.application.use.kiosk": "Chạy trong chế độ kiosk",
   "form.application.use.kiosk.title": "Chạy trong WebView toàn màn hình",

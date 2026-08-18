@@ -12,6 +12,7 @@
   @if (type() === 'app') {
     <core-apk-form
       (formChange)="onApplicationFormChange($event)"
+      (uploadSuccess)="onUploadSuccess()"
       [initialValue]="initialValue()"
     ></core-apk-form>
   } @else if (type() === 'web') {
@@ -31,5 +32,6 @@
   <core-application-icon-form
     (formChange)="onIconFormChange($event)"
     [initialValue]="initialIconValue()"
+    [applicationType]="type()"
   ></core-application-icon-form>
 </div>

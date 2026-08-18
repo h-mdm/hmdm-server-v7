@@ -1,24 +1,28 @@
 <form [formGroup]="formGroup">
   <hmdm-text-input
-    formControlName="pkg"
-    [label]="'form.application.pkg' | translate"
-  ></hmdm-text-input>
-
-  <hmdm-text-input
     formControlName="name"
     [label]="'form.application.name' | translate"
   ></hmdm-text-input>
 
-  <hmdm-text-input
-    formControlName="version"
-    [label]="'form.application.version' | translate"
-  ></hmdm-text-input>
+  <div class="form-row form-row--cols-2">
+    <hmdm-text-input
+      formControlName="pkg"
+      [label]="'form.application.pkg' | translate"
+    ></hmdm-text-input>
 
-  <hmdm-selector
-    formControlName="arch"
-    [label]="'form.application.arch' | translate"
-    [options]="architectureOptions"
-  ></hmdm-selector>
+    <hmdm-text-input
+      formControlName="version"
+      [label]="'form.application.version' | translate"
+    ></hmdm-text-input>
+  </div>
+
+  <!--
+    <hmdm-selector
+      formControlName="arch"
+      [label]="'form.application.arch' | translate"
+      [options]="architectureOptions"
+    ></hmdm-selector>
+  -->
 
   <hmdm-checkbox
     formControlName="system"
@@ -55,8 +59,18 @@
   @if (uploadStatus() !== 'idle' && !versionExists()) {
     <div class="upload-status">
       @if (uploadStatus() === 'uploading') {
-        <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
-        <span class="upload-status__label">{{ uploadProgress() }}%</span>
+        @if (uploadProgress()) {
+          <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
+          <span class="upload-status__label">{{ uploadProgress() }}%</span>
+        } @else {
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      }
+      @if (uploadStatus() === 'processing') {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <span class="upload-status__label">
+          {{ 'form.application.file.processing' | translate }}
+        </span>
       }
       @if (uploadStatus() === 'success') {
         <span class="upload-status__success">

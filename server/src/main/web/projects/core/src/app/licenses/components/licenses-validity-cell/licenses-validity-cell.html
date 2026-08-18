@@ -1,5 +1,5 @@
 <div class="cell">
-  @if (params().value === 'valid') {
-    <mat-icon>check</mat-icon>
+  @if (isValid()) {
+    <mat-icon [class.expiring]="isExpiring()">check</mat-icon>
   }
 </div>

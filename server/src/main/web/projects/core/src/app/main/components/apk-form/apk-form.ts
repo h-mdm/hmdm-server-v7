@@ -18,7 +18,6 @@ import {
   Checkbox,
   FileInputComponent,
   MatIconModule,
-  Selector,
   TextInputComponent,
 } from 'hmdm-ui-kit';
 import { filter, finalize, Subject, takeUntil, tap } from 'rxjs';
@@ -33,13 +32,12 @@ import { TFileUploadResult } from '../../../entity/application/types/file-upload
 import { SettingsFacadeService } from '../../../shared/services/settings-facade.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
-type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
+type UploadStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error';
 
 @Component({
   selector: 'core-apk-form',
   imports: [
     ReactiveFormsModule,
-    Selector,
     TextInputComponent,
     Checkbox,
     TranslatePipe,
@@ -54,6 +52,7 @@ export class ApkForm extends BaseComponent implements OnInit {
   initialValue: InputSignal<TApplicationDTO | null> = input<TApplicationDTO | null>(null);
 
   formChange: OutputEmitterRef<NoInfer<TApplicationAppValue | null>> = output();
+  uploadSuccess: OutputEmitterRef<void> = output();
 
   private readonly applicationService = inject(ApplicationService);
   private readonly apkFormConfig = inject(ApkFormConfig);
@@ -159,14 +158,20 @@ export class ApkForm extends BaseComponent implements OnInit {
             this.untilDestroyed(),
             takeUntil(this.uploadAbort$),
             tap((event) => {
-              if (typeof event === 'number') {
-                this.uploadProgress.set(event);
+              if (typeof event !== 'number') {
+                return;
+              }
+
+              this.uploadProgress.set(event);
+
+              if (event >= 100) {
+                this.uploadStatus.set('processing');
               }
             }),
             filter((event): event is TFileUploadResult => typeof event !== 'number'),
             finalize(() => {
               this.uploadProgress.set(null);
-              if (this.uploadStatus() === 'uploading') {
+              if (this.uploadStatus() === 'uploading' || this.uploadStatus() === 'processing') {
                 this.uploadStatus.set('idle');
               }
             }),
@@ -190,6 +195,8 @@ export class ApkForm extends BaseComponent implements OnInit {
               if (result.exists) {
                 this.versionExists.set(true);
               }
+
+              this.uploadSuccess.emit();
             },
             error: (err) => {
               this.uploadStatus.set('error');

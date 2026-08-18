@@ -580,6 +580,7 @@
   "form.application.url.title": "L'URL deve essere digitato solo se l'app è ospitata su una risorsa esterna. Si consiglia di caricare un file APK utilizzando un campo sottostante.",
   "form.application.url.disabled": "L'URL è impostato per ogni versione. Per modificare l'URL, chiudi questa finestra e fai clic sull'icona \"Versioni\".",
   "form.application.file": "File",
+  "form.application.file.processing": "Elaborazione del file sul server...",
   "form.application.auto.update": "Aggiornamento automatico",
   "form.application.auto.update.title": "Imposta questo flag per aggiornare tutte le configurazioni in cui è installata l'app. Usalo solo se sei sicuro al 100% che l'app sia stabile.",
   "form.application.showLabel": "Mostra icona",

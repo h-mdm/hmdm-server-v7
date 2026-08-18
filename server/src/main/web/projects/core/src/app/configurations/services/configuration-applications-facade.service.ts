@@ -157,7 +157,7 @@ export class ConfigurationAppsFacadeService {
 
   setAppIcon(app: TApplicationDTO, value: boolean): void {
     this._applications.update((apps) =>
-      apps.map((a) => (a.id === app.id && a.version === app.version ? { ...a, icon: value } : a)),
+      apps.map((a) => (a.id === app.id && a.version === app.version ? { ...a, showIcon: value } : a)),
     );
   }
 

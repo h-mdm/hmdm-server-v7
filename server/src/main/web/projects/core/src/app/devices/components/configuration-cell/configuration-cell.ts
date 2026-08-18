@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { BaseCellRenderer } from 'hmdm-ui-kit';
 import { TDevice } from '../../types/device.type';
 import { Router } from '@angular/router';
@@ -9,15 +9,12 @@ import { Router } from '@angular/router';
   styleUrl: './configuration-cell.scss',
   imports: [],
 })
-export class ConfigurationCell extends BaseCellRenderer<TDevice, null> implements OnInit {
+export class ConfigurationCell extends BaseCellRenderer<TDevice, null> {
   private readonly router = inject(Router);
 
-  configurationName: WritableSignal<string> = signal('');
-
-  ngOnInit(): void {
-    const configuration = this.params().data?.configuration.name ?? '';
-    this.configurationName.set(configuration);
-  }
+  configurationName: Signal<string> = computed(
+    () => this.params().data?.configuration?.name ?? '',
+  );
 
   onClick(): void {
     this.router.navigate([

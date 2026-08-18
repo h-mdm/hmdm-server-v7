@@ -152,6 +152,8 @@ export class ApplicationService {
         }
       });
 
+      xhr.upload.addEventListener('load', () => observer.next(100));
+
       xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           const response: THttpResponse<TFileUploadResult> = JSON.parse(xhr.responseText);

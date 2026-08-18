@@ -6,6 +6,10 @@
   align-items: center;
   justify-content: center;
 
+  mat-icon.expiring {
+    color: #ED554DFF;
+  }
+
   @include mat.icon-button-overrides(
       (
         icon-color: var(--mat-sys-on-primary),

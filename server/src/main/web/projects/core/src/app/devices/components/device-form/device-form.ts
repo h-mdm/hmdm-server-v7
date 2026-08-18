@@ -43,7 +43,6 @@ export class DeviceForm {
 
   private initForm(): void {
     const data = this.initialData();
-    console.log('DeviceForm initial data:', data);
 
     if (data) {
       this.formGroup.controls.number.setValue(data.number);

@@ -1,8 +1,7 @@
 <div
   class="cell"
-  [style]="
-    `word-break: break-all; color: ${params().data.status === 'valid' ? '#1A1B1F' : '#A7A7A7FF'};`
-  "
+  [class.expiring]="isExpiring()"
+  [class.invalid]="!isValid()"
 >
   {{params().value}}
 </div>

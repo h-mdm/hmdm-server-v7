@@ -580,6 +580,7 @@
   "form.application.url.title": "La URL solo debe escribirse si su aplicación está alojada en un recurso externo. Se recomienda cargar un archivo APK utilizando un campo a continuación.",
   "form.application.url.disabled": "La URL se configura para cada versión. Para cambiar la URL, cierre esta ventana y haga clic en el icono \"Versiones\".",
   "form.application.file": "Archivo",
+  "form.application.file.processing": "Procesando el archivo en el servidor...",
   "form.application.auto.update": "Auto-Actualización",
   "form.application.auto.update.title": "Establezca esta bandera para actualizar todas las configuraciones donde está instalada la aplicación. Úselo solo si está 100% seguro de que la aplicación es estable.",
   "form.application.showLabel": "Mostrar Icono",

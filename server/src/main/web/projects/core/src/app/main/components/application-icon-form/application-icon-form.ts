@@ -1,5 +1,7 @@
 import {
   Component,
+  computed,
+  effect,
   inject,
   input,
   InputSignal,
@@ -7,14 +9,18 @@ import {
   output,
   OutputEmitterRef,
   signal,
+  Signal,
   WritableSignal,
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BaseComponent, Checkbox, Selector, TextInputComponent } from 'hmdm-ui-kit';
+import { EApplicationType } from '../../../entity/application/enum/application-type.enum';
+import { TApplicationType } from '../../../entity/application/types/application-type.type';
 import { ApplicationIconFormConfig } from '../../configuration/application-icon-form.config';
+import { ICON_APPLICATION_TYPES } from '../../const/icon-application-types.const';
 import { IconDialogService } from '../../services/icon-dialog.service';
 import { IconFacadeService } from '../../services/icon-facade.service';
 import { TApplicationIconFormValue } from '../../types/application-icon-form.type';
@@ -36,6 +42,7 @@ import { TApplicationIconFormValue } from '../../types/application-icon-form.typ
 export class ApplicationIconForm extends BaseComponent implements OnInit {
   initialValue: InputSignal<TApplicationIconFormValue | null> =
     input<TApplicationIconFormValue | null>(null);
+  applicationType: InputSignal<TApplicationType> = input<TApplicationType>(EApplicationType.APP);
   formChange: OutputEmitterRef<TApplicationIconFormValue | null> = output();
 
   private readonly iconDialogService = inject(IconDialogService);
@@ -45,6 +52,22 @@ export class ApplicationIconForm extends BaseComponent implements OnInit {
   formGroup = this.applicationIconFormConfig.getFormGroup();
   iconsOptions = this.iconFacadeService.iconsOptions;
   isShowIcon: WritableSignal<boolean> = signal(false);
+
+  isIconTextRequired: Signal<boolean> = computed(
+    () => this.isShowIcon() && ICON_APPLICATION_TYPES.includes(this.applicationType()),
+  );
+
+  private readonly iconTextValidator = effect(() => {
+    const iconText = this.formGroup.controls.iconText;
+
+    if (this.isIconTextRequired()) {
+      iconText.addValidators(Validators.required);
+    } else {
+      iconText.removeValidators(Validators.required);
+    }
+
+    iconText.updateValueAndValidity();
+  });
 
   ngOnInit(): void {
     const initialValue = this.initialValue();
@@ -66,6 +89,10 @@ export class ApplicationIconForm extends BaseComponent implements OnInit {
         this.formChange.emit(formValue);
       },
     });
+  }
+
+  setShowIcon(showIcon: boolean): void {
+    this.formGroup.controls.showIcon.setValue(showIcon);
   }
 
   onNewIconClick(): void {

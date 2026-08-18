@@ -580,6 +580,7 @@
   "form.application.url.title": "URL yalnızca uygulamanız harici bir kaynakta barındırılıyorsa yazılmalıdır. Aşağıdaki alanı kullanarak bir APK dosyası yüklemeniz önerilir.",
   "form.application.url.disabled": "URL her sürüm için ayarlanır. URL'yi değiştirmek için bu pencereyi kapatın ve \"Sürümler\" simgesine tıklayın.",
   "form.application.file": "Dosya",
+  "form.application.file.processing": "Dosya sunucuda işleniyor...",
   "form.application.auto.update": "Otomatik Güncelleme",
   "form.application.auto.update.title": "Uygulamanın yüklendiği tüm yapılandırmaları güncellemek için bu bayrağı ayarlayın. Yalnızca uygulamanın %100 kararlı olduğundan eminseniz kullanın.",
   "form.application.showLabel": "Simgeyi Göster",

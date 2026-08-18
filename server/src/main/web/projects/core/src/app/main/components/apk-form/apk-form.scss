@@ -1,3 +1,13 @@
+.form-row {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+
+  &--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .upload-status {
   margin-bottom: 8px;
 
