@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, Signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BaseCellRenderer, Selector, TOption } from 'hmdm-ui-kit';
 import { TApplicationDTO } from '../../../entity/application/types/application-dto.type';
@@ -10,20 +10,24 @@ import { ConfigurationAppsFacadeService } from '../../services/configuration-app
   styleUrl: './apps-action-cell.scss',
   imports: [Selector, ReactiveFormsModule],
 })
-export class AppsActionCell extends BaseCellRenderer<TApplicationDTO> implements OnInit {
+export class AppsActionCell extends BaseCellRenderer<TApplicationDTO> {
   private readonly configurationAppsFacadeService = inject(ConfigurationAppsFacadeService);
 
-  actionOptions: WritableSignal<TOption<number>[]> = signal([]);
+  app: Signal<TApplicationDTO> = computed(() => this.params().data);
+  actionOptions: Signal<TOption<number>[]> = computed(() =>
+    this.configurationAppsFacadeService.getActionOptions(this.app()),
+  );
   formControl: FormControl<number> = new FormControl(1, { nonNullable: true });
 
-  ngOnInit(): void {
-    const app = this.params().data;
-    this.actionOptions.set(this.configurationAppsFacadeService.getActionOptions(app));
+  private readonly syncControlValue = effect(() => {
+    this.formControl.setValue(this.app().action, { emitEvent: false });
+  });
 
-    this.formControl.setValue(app.action);
+  constructor() {
+    super();
 
-    this.formControl.valueChanges.pipe(this.untilDestroyed()).subscribe(() => {
-      this.configurationAppsFacadeService.setAppAction(app, this.formControl.value);
+    this.formControl.valueChanges.pipe(this.untilDestroyed()).subscribe((value) => {
+      this.configurationAppsFacadeService.setAppAction(this.app(), value);
     });
   }
 }

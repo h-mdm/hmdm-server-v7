@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DialogBase, DialogCommonButtons, DialogTemplate, MAT_DIALOG_DATA } from 'hmdm-ui-kit';
 import { TaskFormConfig } from '../../config/task-form.config';
+import { toFormMessageType, toRequestMessageType } from '../../utils/message-type.util';
 import { TaskForm } from '../task-form/task-form';
 
 @Component({
@@ -17,9 +18,10 @@ export class TaskDialog extends DialogBase implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      console.log('Patching form with data:', this.data);
-
-      this.formGroup.patchValue(this.data, { emitEvent: false });
+      this.formGroup.patchValue(
+        { ...this.data, ...toFormMessageType(this.data.messageType) },
+        { emitEvent: false },
+      );
     }
   }
 
@@ -29,6 +31,11 @@ export class TaskDialog extends DialogBase implements OnInit {
       return;
     }
 
-    this.dialogRef.close(this.formGroup.getRawValue());
+    const { customMessageType, ...value } = this.formGroup.getRawValue();
+
+    this.dialogRef.close({
+      ...value,
+      messageType: toRequestMessageType({ ...value, customMessageType }),
+    });
   }
 }

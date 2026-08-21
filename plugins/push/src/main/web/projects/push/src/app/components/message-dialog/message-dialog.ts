@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { DialogBase, DialogCommonButtons, DialogTemplate } from 'hmdm-ui-kit';
 import { MessageFormConfig } from '../../config/message-form.config';
+import { toRequestMessageType } from '../../utils/message-type.util';
 import { MessageForm } from '../message-form/message-form';
 
 @Component({
@@ -20,6 +21,11 @@ export class MessageDialog extends DialogBase {
       return;
     }
 
-    this.dialogRef.close(this.formGroup.getRawValue());
+    const { customMessageType, ...value } = this.formGroup.getRawValue();
+
+    this.dialogRef.close({
+      ...value,
+      messageType: toRequestMessageType({ ...value, customMessageType }),
+    });
   }
 }

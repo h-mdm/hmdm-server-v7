@@ -20,6 +20,7 @@
   "plugin.push.label.device": "Dispositivo",
   "plugin.push.label.messageType": "Tipo",
   "plugin.push.label.messageType.custom": "Personalizado",
+  "plugin.push.label.customMessageType": "Tipo de mensaje",
   "plugin.push.label.enter.type": "Ingrese el tipo de mensaje",
   "plugin.push.label.payload": "Carga útil",
   "plugin.push.label.sample.payload": "Carga útil de muestra: ",

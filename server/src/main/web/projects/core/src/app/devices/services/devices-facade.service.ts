@@ -24,6 +24,8 @@ import { TGroup } from '../../shared/types/group.type';
 import { TOptional } from '../../shared/types/optional.type';
 import { ConfigurationBulkDialog } from '../components/configuration-bulk-dialog/configuration-bulk-dialog';
 import { GroupBulkDialog } from '../components/group-bulk-dialog/group-bulk-dialog';
+import { DEVICE_ONLINE_STATUS } from '../const/device-online-status-options.const';
+import { CUSTOM_TIME_VALUE } from '../const/device-time-options.const';
 import { DEVICES_SORT_MAPPER } from '../const/devices-sort-mapper.const';
 import { TConfiguration } from '../types/configuration.type';
 import { TDeviceFormValue } from '../types/device-form-value.type';
@@ -284,24 +286,44 @@ export class DevicesFacadeService {
 
   private getRequestBody(): TSearchDevicesRequest {
     const sortBy = this.SORT_MAPPER[this.sortData?.sortBy || ''] ?? null;
+    const formData: TOptional<TSearchDevicesFormValue> = this.formData ?? {};
+    const { status, time, customTime, enrollmentDate, ...searchFields } = formData;
+
     const requestBody: TSearchDevicesRequest = {
-      ...this.formData,
+      ...searchFields,
       value: this.searchTerm ?? null,
       pageNum: this.pageData.pageIndex + 1,
       pageSize: this.pageData.pageSize,
       sortBy,
       sortDir: this.sortData?.sortDir || 'asc',
-      enrollmentDateFrom: this.formData?.enrollmentDate?.start
-        ? new Date(this.formData.enrollmentDate.start).toISOString()
+      enrollmentDateFrom: enrollmentDate?.start
+        ? new Date(enrollmentDate.start).toISOString()
         : null,
-      enrollmentDateTo: this.formData?.enrollmentDate?.end
-        ? new Date(this.formData.enrollmentDate.end).toISOString()
-        : null,
-      androidVersion: this.formData?.androidVersion || null,
-      launcherVersion: this.formData?.launcherVersion || null,
+      enrollmentDateTo: enrollmentDate?.end ? new Date(enrollmentDate.end).toISOString() : null,
+      androidVersion: formData.androidVersion || null,
+      launcherVersion: formData.launcherVersion || null,
+      ...this.getOnlineStatusParams(status, time, customTime),
     };
 
     return requestBody;
+  }
+
+  private getOnlineStatusParams(
+    status: string | null | undefined,
+    time: string | null | undefined,
+    customTime: string | null | undefined,
+  ): Pick<TSearchDevicesRequest, 'onlineLaterMillis' | 'onlineEarlierMillis'> {
+    const minutes = time === CUSTOM_TIME_VALUE ? Number(customTime) : Number(time);
+
+    if (!status || !time || !minutes || minutes <= 0) {
+      return { onlineLaterMillis: null, onlineEarlierMillis: null };
+    }
+
+    const millis = minutes * 60_000;
+
+    return status === DEVICE_ONLINE_STATUS.ONLINE
+      ? { onlineLaterMillis: millis, onlineEarlierMillis: null }
+      : { onlineLaterMillis: null, onlineEarlierMillis: millis };
   }
 
   private groupsToOption(response: TGroup[]): TOption<number>[] {

@@ -4,6 +4,7 @@ import { TOption, TTableSortState } from '../../../../../hmdm-ui-kit/src/public-
 import { ApplicationService } from '../../entity/application/services/application.service';
 import { TApplicationDTO } from '../../entity/application/types/application-dto.type';
 import { ConfigurationService } from '../../entity/configuration/services/configuration.service';
+import { APP_ACTION } from '../const/app-action.const';
 import { ConfigurationDetailsFacadeService } from './configuration-details-facade.service';
 import { TConfigurationAppDetailsFormValue } from '../types/configuration-app-details-form.type';
 
@@ -25,7 +26,10 @@ export class ConfigurationAppsFacadeService {
   isLoadingApplications: WritableSignal<boolean> = signal(false);
   tableData = computed(() => {
     const apps = this._applications().filter((app) => {
-      return (app.action !== 0 || app.actionChanged) && (this.showSystemApps() || !app.system);
+      return (
+        (app.action !== APP_ACTION.BLOCK || app.actionChanged) &&
+        (this.showSystemApps() || !app.system)
+      );
     });
 
     if (this._sortState()) {
@@ -105,27 +109,27 @@ export class ConfigurationAppsFacadeService {
 
     if (this.isInstallOptionAvailable(app)) {
       options.push({
-        value: 1,
+        value: APP_ACTION.ALLOW,
         viewValue: 'form.configuration.apps.action.install',
       });
       options.push({
-        value: 0,
+        value: APP_ACTION.BLOCK,
         viewValue: 'form.configuration.apps.action.not.install',
       });
     } else {
       options.push({
-        value: 1,
+        value: APP_ACTION.ALLOW,
         viewValue: 'form.configuration.apps.action.permit',
       });
       options.push({
-        value: 0,
+        value: APP_ACTION.BLOCK,
         viewValue: 'form.configuration.apps.action.prohibit',
       });
     }
 
     if (this.isUninstallOptionAvailable(app)) {
       options.push({
-        value: 2,
+        value: APP_ACTION.DELETE,
         viewValue: 'form.configuration.apps.action.delete',
       });
     }
@@ -144,8 +148,6 @@ export class ConfigurationAppsFacadeService {
   }
 
   setAppAction(app: TApplicationDTO, value: number): void {
-    console.log(app, value);
-
     this._applications.update((apps) =>
       apps.map((a) =>
         a.id === app.id && a.version === app.version

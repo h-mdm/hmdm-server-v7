@@ -87,7 +87,6 @@ export class Devices extends BaseComponent implements OnInit, OnDestroy, AfterVi
 
   isDeviceLimitReached = computed(() => {
     const s = this.settingsFacadeService.settings();
-    console.log(s);
     return !!s && s.deviceLimit > 0 && s.deviceCount >= s.deviceLimit;
   });
 
@@ -229,8 +228,6 @@ export class Devices extends BaseComponent implements OnInit, OnDestroy, AfterVi
   }
 
   onFormValueChange($event: any): void {
-    console.log($event);
-
     this.devicesFacadeService.updateFormData($event);
 
     this.activeFiltersCnt.set(

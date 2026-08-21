@@ -1,5 +1,7 @@
 import { TOption } from 'hmdm-ui-kit';
 
+export const CUSTOM_TIME_VALUE = 'custom';
+
 export const DEVICE_TIME_OPTIONS: TOption<string>[] = [
   {
     viewValue: 'form.devices.selection.online.status.1',
@@ -43,6 +45,6 @@ export const DEVICE_TIME_OPTIONS: TOption<string>[] = [
   },
   {
     viewValue: 'form.devices.selection.online.status.custom',
-    value: 'custom',
+    value: CUSTOM_TIME_VALUE,
   },
 ];

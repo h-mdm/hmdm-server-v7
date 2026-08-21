@@ -1,5 +1,7 @@
 import { TOption } from 'hmdm-ui-kit';
 
+export const CUSTOM_MESSAGE_TYPE = '(custom)';
+
 export const MESSAGE_TYPE_OPTIONS: TOption<string>[] = [
   { value: 'configUpdated', viewValue: 'configUpdated' },
   { value: 'runApp', viewValue: 'runApp' },
@@ -12,7 +14,9 @@ export const MESSAGE_TYPE_OPTIONS: TOption<string>[] = [
   { value: 'runCommand', viewValue: 'runCommand' },
   { value: 'reboot', viewValue: 'reboot' },
   { value: 'exitKiosk', viewValue: 'exitKiosk' },
+  { value: 'adminPanel', viewValue: 'adminPanel' },
   { value: 'clearDownloadHistory', viewValue: 'clearDownloadHistory' },
   { value: 'grantPermissions', viewValue: 'grantPermissions' },
-  { value: '(custom)', viewValue: '(custom)' },
+  { value: 'clearAppData', viewValue: 'clearAppData' },
+  { value: CUSTOM_MESSAGE_TYPE, viewValue: CUSTOM_MESSAGE_TYPE },
 ];

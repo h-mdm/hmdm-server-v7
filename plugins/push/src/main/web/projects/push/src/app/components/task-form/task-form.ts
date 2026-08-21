@@ -11,7 +11,8 @@ import {
   TextInputComponent,
   TranslatePipe,
 } from 'hmdm-ui-kit';
-import { MESSAGE_TYPE_OPTIONS } from '../../const/message-type-options.const';
+import { CUSTOM_MESSAGE_TYPE, MESSAGE_TYPE_OPTIONS } from '../../const/message-type-options.const';
+import { MESSAGE_TYPE_PAYLOADS } from '../../const/message-type-payloads.const';
 import { SCOPE_OPTIONS } from '../../const/scope-options.const';
 import { TTaskForm } from '../../types/task-form.type';
 
@@ -49,6 +50,10 @@ export class TaskForm extends BaseComponent implements OnInit {
     return this.formGroup().controls.messageType.value;
   }
 
+  get isCustomMessageType(): boolean {
+    return this.messageType === CUSTOM_MESSAGE_TYPE;
+  }
+
   ngOnInit(): void {
     this.formGroup()
       .controls.scope.valueChanges.pipe(this.untilDestroyed())
@@ -57,6 +62,13 @@ export class TaskForm extends BaseComponent implements OnInit {
         this.formGroup().controls.configurationId.reset();
         this.formGroup().controls.groupId.reset();
         this.updateFormControls();
+      });
+
+    this.formGroup()
+      .controls.messageType.valueChanges.pipe(this.untilDestroyed())
+      .subscribe((messageType) => {
+        this.updateCustomMessageType();
+        this.formGroup().controls.payload.setValue(MESSAGE_TYPE_PAYLOADS[messageType] ?? '');
       });
 
     this.updateFormControls();
@@ -81,7 +93,11 @@ export class TaskForm extends BaseComponent implements OnInit {
       this.formGroup().controls.deviceNumber.disable();
     }
 
-    if (this.messageType === '(custom)') {
+    this.updateCustomMessageType();
+  }
+
+  private updateCustomMessageType(): void {
+    if (this.isCustomMessageType) {
       this.formGroup().controls.customMessageType.enable();
     } else {
       this.formGroup().controls.customMessageType.disable();

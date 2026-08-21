@@ -35,7 +35,7 @@
     [options]="messageTypeOptions"
   ></hmdm-selector>
 
-  @if (messageType === '(custom)') {
+  @if (isCustomMessageType) {
     <hmdm-text-input
       formControlName="customMessageType"
       [label]="'plugin.push.label.customMessageType' | translate"

@@ -20,6 +20,7 @@
   "plugin.push.label.device": "デバイス",
   "plugin.push.label.messageType": "タイプ",
   "plugin.push.label.messageType.custom": "カスタム",
+  "plugin.push.label.customMessageType": "メッセージタイプ",
   "plugin.push.label.enter.type": "メッセージの種類を入力してください",
   "plugin.push.label.payload": "ペイロード",
   "plugin.push.label.sample.payload": "サンプル ペイロード: ",

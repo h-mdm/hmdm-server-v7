@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from 'hmdm-ui-kit';
-import { filter, switchMap, take, tap } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs';
 import { MessageDialog } from '../components/message-dialog/message-dialog';
 import { PushFacadeService } from './push-facade.service';
 
@@ -18,7 +18,6 @@ export class PushDialogService {
       .pipe(
         take(1),
         filter(Boolean),
-        tap((data) => console.log('Message to send:', data)),
         switchMap((data) => this.pushFacadeService.sendMessage(data)),
       )
       .subscribe(() => {

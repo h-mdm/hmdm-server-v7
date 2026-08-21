@@ -26,7 +26,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server</artifactId>
     <packaging>war</packaging>
-    <version>7.0.1</version>
+    <version>7.01.1</version>
     <name>MDM Server</name>
 
     <parent>
@@ -96,6 +96,26 @@
                 <version>1.8</version>
 
                 <executions>
+                   <!-- Generate the front-end environment file with the project version -->
+                    <execution>
+                        <id>prepare-web-environment</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.basedir}/src/main/web/environment-templates/environment.ts.template"
+                                      tofile="${project.basedir}/src/main/web/projects/core/src/environments/environment.ts"
+                                      overwrite="true">
+                                    <filterset begintoken="${" endtoken="}">
+                                        <filter token="project.version" value="${project.version}"/>
+                                    </filterset>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>check-web-build</id>
                         <phase>generate-sources</phase>
@@ -110,9 +130,10 @@
                                         targetfile="${project.basedir}/src/main/web/dist/core">
                                     <srcfiles dir="${project.basedir}/src/main/web/projects/core">
                                         <include name="**/*"/>
-                                        <exclude name="tsconfig.federation.json"/>
+                                       <exclude name="src/environments/environment.ts"/>
                                     </srcfiles>
-                                </uptodate>
+                                    <srcfiles dir="${project.basedir}" includes="pom.xml"/>
+                                 </uptodate>
                                 <condition property="skip.web.build" value="true" else="false">
                                     <isset property="web.build.uptodate"/>
                                 </condition>

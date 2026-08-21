@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BaseCellRenderer, TextInputComponent } from 'hmdm-ui-kit';
 import { TApplicationDTO } from '../../../entity/application/types/application-dto.type';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ConfigurationDetailsFacadeService } from '../../services/configuration-details-facade.service';
+import { APP_ACTION } from '../../const/app-action.const';
 import { ConfigurationAppsFacadeService } from '../../services/configuration-applications-facade.service';
 
 @Component({
@@ -29,6 +29,6 @@ export class AppsOrderCell extends BaseCellRenderer<TApplicationDTO> implements 
   isDisplayed(): boolean {
     const app = this.params().data;
 
-    return app.action === 1 && app.showIcon;
+    return app.action === APP_ACTION.ALLOW && app.showIcon;
   }
 }

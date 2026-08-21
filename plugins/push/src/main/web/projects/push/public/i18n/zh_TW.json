@@ -20,6 +20,7 @@
   "plugin.push.label.device": "設備",
   "plugin.push.label.messageType": "類型",
   "plugin.push.label.messageType.custom": "自定義",
+  "plugin.push.label.customMessageType": "訊息類型",
   "plugin.push.label.enter.type": "輸入消息類型",
   "plugin.push.label.payload": "有效負載",
   "plugin.push.label.sample.payload": "示例負載：",

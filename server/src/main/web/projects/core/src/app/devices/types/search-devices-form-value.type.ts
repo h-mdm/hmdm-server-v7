@@ -14,4 +14,5 @@ export type TSearchDevicesFormValue = {
   mdmMode: boolean | null;
   status: string | null;
   time: string | null;
+  customTime: string | null;
 };

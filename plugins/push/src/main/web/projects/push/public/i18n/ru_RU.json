@@ -20,6 +20,7 @@
   "plugin.push.label.device": "Устройство",
   "plugin.push.label.messageType": "Тип",
   "plugin.push.label.messageType.custom": "Пользовательский",
+  "plugin.push.label.customMessageType": "Тип сообщения",
   "plugin.push.label.enter.type": "Введите тип сообщения",
   "plugin.push.label.payload": "Содержимое",
   "plugin.push.label.sample.payload": "Пример содержимого: ",

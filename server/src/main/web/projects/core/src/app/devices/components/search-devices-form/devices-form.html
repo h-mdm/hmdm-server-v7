@@ -20,7 +20,7 @@
         <hmdm-selector
           formControlName="status"
           label="{{ 'form.settings.common.status' | translate }}"
-          [options]="statusOptions"
+          [options]="onlineStatusOptions"
           [optional]="true"
         ></hmdm-selector>
 
@@ -30,6 +30,15 @@
           [options]="timeOptions"
           [optional]="true"
         ></hmdm-selector>
+
+        @if (isCustomTime()) {
+          <hmdm-text-input
+            formControlName="customTime"
+            inputType="number"
+            label="{{ 'form.devices.selection.number' | translate }}"
+            help="{{ 'form.devices.selection.online.status.label' | translate }}"
+          ></hmdm-text-input>
+        }
       </fieldset>
 
       <fieldset class="devices-fieldset">

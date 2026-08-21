@@ -20,6 +20,7 @@
   "plugin.push.label.device": "Gerät",
   "plugin.push.label.messageType": "Typ",
   "plugin.push.label.messageType.custom": "Benutzerdefiniert",
+  "plugin.push.label.customMessageType": "Nachrichtentyp",
   "plugin.push.label.enter.type": "Nachrichtentyp eingeben",
   "plugin.push.label.payload": "Nutzlast",
   "plugin.push.label.sample.payload": "Beispielnutzlast: ",

@@ -20,6 +20,7 @@
 	"plugin.push.label.device": "Aygıt",
 	"plugin.push.label.messageType": "Tür",
 	"plugin.push.label.messageType.custom": "Özel",
+	"plugin.push.label.customMessageType": "Mesaj Türü",
 	"plugin.push.label.enter.type": "Mesaj türünü girin",
 	"plugin.push.label.payload": "Yük",
 	"plugin.push.label.sample.payload": "Örnek yük: ",

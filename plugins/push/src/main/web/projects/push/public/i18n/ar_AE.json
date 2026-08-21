@@ -20,6 +20,7 @@
   "plugin.push.label.device": "جهاز",
   "plugin.push.label.messageType": "يكتب",
   "plugin.push.label.messageType.custom": "مخصص",
+  "plugin.push.label.customMessageType": "نوع الرسالة",
   "plugin.push.label.enter.type": "أدخل نوع الرسالة",
   "plugin.push.label.payload": "الحمولة",
   "plugin.push.label.sample.payload": "عينة الحمولة:",

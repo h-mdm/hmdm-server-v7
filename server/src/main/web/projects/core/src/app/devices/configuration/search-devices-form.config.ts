@@ -22,6 +22,7 @@ export class SearchDevicesFormConfig {
       mdmMode: this.fb.control(null),
       status: this.fb.control(null),
       time: this.fb.control(null),
+      customTime: this.fb.control(null),
     });
   }
 }
