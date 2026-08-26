@@ -205,6 +205,8 @@ read -e -p "Headwind MDM scripts directory [$DEFAULT_SCRIPT_LOCATION]: " -i "$DE
 if [ ! -d $SCRIPT_LOCATION ]; then
     mkdir -p $SCRIPT_LOCATION || exit 1
 fi
+cp ./cpu_monitor.sh $SCRIPT_LOCATION
+cp ./update-web-app.sh $SCRIPT_LOCATION
 
 echo
 echo "Web application setup"
