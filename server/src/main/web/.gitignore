@@ -42,3 +42,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Exclude the automatically generated file
+/projects/core/src/environments/environment.ts
