@@ -28,11 +28,10 @@ import com.hmdm.persistence.UnsecureDAO;
 import com.hmdm.persistence.domain.Device;
 import com.hmdm.plugin.service.PluginStatusCache;
 import com.hmdm.plugins.deviceinfo.persistence.DeviceInfoDAO;
+import com.hmdm.plugins.deviceinfo.persistence.DeviceInfoSettingsDAO;
 import com.hmdm.plugins.deviceinfo.persistence.domain.DeviceDynamicInfo;
-import com.hmdm.plugins.deviceinfo.rest.json.DeviceDynamicInfoRecord;
-import com.hmdm.plugins.deviceinfo.rest.json.DeviceInfo;
-import com.hmdm.plugins.deviceinfo.rest.json.DynamicInfoExportFilter;
-import com.hmdm.plugins.deviceinfo.rest.json.DynamicInfoFilter;
+import com.hmdm.plugins.deviceinfo.persistence.domain.DeviceInfoPluginSettings;
+import com.hmdm.plugins.deviceinfo.rest.json.*;
 import com.hmdm.plugins.deviceinfo.service.DeviceInfoExportService;
 import com.hmdm.rest.json.DeviceLocation;
 import com.hmdm.rest.json.DeviceLookupItem;
@@ -86,6 +85,8 @@ public class DeviceInfoPublicResource {
      */
     private UnsecureDAO unsecureDAO;
 
+    private DeviceInfoSettingsDAO settingsDAO;
+
     private PluginStatusCache pluginStatusCache;
 
     /**
@@ -104,10 +105,12 @@ public class DeviceInfoPublicResource {
      */
     @Inject
     public DeviceInfoPublicResource(DeviceInfoDAO deviceInfoDAO,
+                                    DeviceInfoSettingsDAO settingsDAO,
                                     UnsecureDAO unsecureDAO,
                                     PluginStatusCache pluginStatusCache,
                                     EventService eventService) {
         this.deviceInfoDAO = deviceInfoDAO;
+        this.settingsDAO = settingsDAO;
         this.unsecureDAO = unsecureDAO;
         this.pluginStatusCache = pluginStatusCache;
         this.eventService = eventService;
@@ -129,7 +132,7 @@ public class DeviceInfoPublicResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/public/plugin-deviceinfo/{deviceNumber}")
+    @Path("/public/plugin-deviceinfo/data/{deviceNumber}")
     public Response saveDeviceInfo(@PathParam("deviceNumber") String deviceNumber, List<DeviceDynamicInfo> data) {
         return saveDeviceInfoInternal(deviceNumber, data);
     }
@@ -180,6 +183,66 @@ public class DeviceInfoPublicResource {
             }
         } catch (Exception e) {
             logger.error("Unexpected error when saving device dynamic info", e);
+            return Response.INTERNAL_ERROR();
+        }
+    }
+
+    // =================================================================================================================
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/plugins/deviceinfo/deviceinfo-plugin-settings/device/{deviceNumber}")
+    public Response lookupDevicesLegacy(@PathParam("deviceNumber") String deviceNumber) {
+        return lookupDevicesInternal(deviceNumber);
+    }
+
+    // =================================================================================================================
+    @Operation(
+            summary = "Get plugin settings by device",
+            description = "Gets the plugin settings for usage by device",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DeviceSettings.class)
+                            )
+                    )
+            }
+    )
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/public/plugin-deviceinfo/settings/{deviceNumber}")
+    public Response lookupDevices(@PathParam("deviceNumber") String deviceNumber) {
+        return lookupDevicesInternal(deviceNumber);
+    }
+
+    private Response lookupDevicesInternal(String deviceNumber) {
+        try {
+            // Find device and set the device ID for records
+            Device dbDevice = this.unsecureDAO.getDeviceByNumber(deviceNumber);
+            if (dbDevice == null) {
+                logger.error("Device {} was not found", deviceNumber);
+                return Response.DEVICE_NOT_FOUND_ERROR();
+            }
+
+            SecurityContext.init(dbDevice.getCustomerId());
+            try {
+                if (this.pluginStatusCache.isPluginDisabled(PLUGIN_ID)) {
+                    logger.error("Rejecting request from device {} due to disabled plugin", deviceNumber);
+                    return Response.PLUGIN_DISABLED();
+                }
+
+                final DeviceInfoPluginSettings pluginSettings = this.settingsDAO.getPluginSettings(dbDevice.getCustomerId());
+
+                return Response.OK(new DeviceSettings(pluginSettings));
+            } finally {
+                SecurityContext.release();
+            }
+        } catch (Exception e) {
+            logger.error("Unexpected error when retrieving device info", e);
             return Response.INTERNAL_ERROR();
         }
     }
