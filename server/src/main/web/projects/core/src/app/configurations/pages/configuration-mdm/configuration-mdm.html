@@ -11,54 +11,56 @@
       [options]="applicationOptions()"
     ></hmdm-select-search>
 
+    <hmdm-text-input
+      formControlName="eventReceivingComponent"
+      [label]="'form.configuration.settings.mdm.component.event.receiver' | translate"
+    ></hmdm-text-input>
+  </div>
+
+  @if (isKioskMode()) {
     <hmdm-select-search
       formControlName="contentAppId"
       [label]="'form.configuration.settings.mdm.app.content' | translate"
       [options]="applicationOptions()"
     ></hmdm-select-search>
-  </div>
 
-  <hmdm-text-input
-    formControlName="eventReceivingComponent"
-    [label]="'form.configuration.settings.mdm.component.event.receiver' | translate"
-  ></hmdm-text-input>
+    <div class="mdm-kiosk mdm-double">
+      <hmdm-checkbox
+        formControlName="kioskHome"
+        [label]="'form.configuration.settings.mdm.kiosk.home' | translate"
+      ></hmdm-checkbox>
 
-  <div class="mdm-kiosk mdm-double">
-    <hmdm-checkbox
-      formControlName="kioskHome"
-      [label]="'form.configuration.settings.mdm.kiosk.home' | translate"
-    ></hmdm-checkbox>
+      <hmdm-checkbox
+        formControlName="kioskRecents"
+        [label]="'form.configuration.settings.mdm.kiosk.recents' | translate"
+      ></hmdm-checkbox>
 
-    <hmdm-checkbox
-      formControlName="kioskRecents"
-      [label]="'form.configuration.settings.mdm.kiosk.recents' | translate"
-    ></hmdm-checkbox>
+      <hmdm-checkbox
+        formControlName="kioskNotifications"
+        [label]="'form.configuration.settings.mdm.kiosk.notifications' | translate"
+      ></hmdm-checkbox>
 
-    <hmdm-checkbox
-      formControlName="kioskNotifications"
-      [label]="'form.configuration.settings.mdm.kiosk.notifications' | translate"
-    ></hmdm-checkbox>
+      <hmdm-checkbox
+        formControlName="kioskSystemInfo"
+        [label]="'form.configuration.settings.mdm.kiosk.system.info' | translate"
+      ></hmdm-checkbox>
 
-    <hmdm-checkbox
-      formControlName="kioskSystemInfo"
-      [label]="'form.configuration.settings.mdm.kiosk.system.info' | translate"
-    ></hmdm-checkbox>
+      <hmdm-checkbox
+        formControlName="kioskKeyguard"
+        [label]="'form.configuration.settings.mdm.kiosk.keyguard' | translate"
+      ></hmdm-checkbox>
 
-    <hmdm-checkbox
-      formControlName="kioskKeyguard"
-      [label]="'form.configuration.settings.mdm.kiosk.keyguard' | translate"
-    ></hmdm-checkbox>
+      <hmdm-checkbox
+        formControlName="kioskLockButtons"
+        [label]="'form.configuration.settings.mdm.kiosk.lock.buttons' | translate"
+      ></hmdm-checkbox>
 
-    <hmdm-checkbox
-      formControlName="kioskLockButtons"
-      [label]="'form.configuration.settings.mdm.kiosk.lock.buttons' | translate"
-    ></hmdm-checkbox>
-
-    <hmdm-checkbox
-      formControlName="kioskExit"
-      [label]="'form.configuration.settings.mdm.kiosk.exit' | translate"
-    ></hmdm-checkbox>
-  </div>
+      <hmdm-checkbox
+        formControlName="kioskExit"
+        [label]="'form.configuration.settings.mdm.kiosk.exit' | translate"
+      ></hmdm-checkbox>
+    </div>
+  }
 
   <div class="mdm-wifi">
     <hmdm-selector

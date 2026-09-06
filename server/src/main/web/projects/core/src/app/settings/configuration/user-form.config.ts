@@ -54,6 +54,8 @@ export class UserFormConfig {
       ? [editModeConfirmValidator('newPassword')]
       : [Validators.required, matchValueValidator('newPassword', 'passwordMatch')];
 
+    const userRoleValidators = isEditMode ? [] : [Validators.required];
+
     const form = this.fb.group<TUserForm>({
       login: this.fb.control('', { validators: [Validators.required] }),
       email: this.fb.control('', {
@@ -66,7 +68,7 @@ export class UserFormConfig {
       confirm: this.fb.control('', { validators: confirmValidators }),
       configurations: this.fb.control([]),
       groups: this.fb.control([]),
-      userRole: this.fb.control(null),
+      userRole: this.fb.control(null, { validators: userRoleValidators }),
       alertLevel: this.fb.control(DEFAULT_ALERT_LEVEL),
     });
 

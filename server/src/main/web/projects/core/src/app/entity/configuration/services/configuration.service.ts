@@ -77,12 +77,16 @@ export class ConfigurationService {
       .pipe(map(() => void 0));
   }
 
-  updateConfiguration(configuration: TConfigurationDTO): Observable<void> {
-    return this.http.put<THttpResponse<void>>(`rest/private/configurations`, configuration).pipe(
-      map(() => void 0),
-      tap(() => {
-        this.snackBarService.success('success.configuration.saved');
-      }),
-    );
+  updateConfiguration(configuration: TConfigurationDTO): Observable<TConfigurationDTO | null> {
+    return this.http
+      .put<THttpResponse<TConfigurationDTO>>(`rest/private/configurations`, configuration)
+      .pipe(
+        map((response) => (response.status === 'OK' ? response.data : null)),
+        tap((saved) => {
+          if (saved) {
+            this.snackBarService.success('success.configuration.saved');
+          }
+        }),
+      );
   }
 }

@@ -1,5 +1,4 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { ConfigurationService } from '../../entity/configuration/services/configuration.service';
 import { TAppSettingsDTO } from '../../entity/configuration/types/app-settings-dto.type';
@@ -8,16 +7,18 @@ import { TConfigurationFileDTO } from '../../entity/configuration/types/configur
 import { TConfigurationCommonFormValue } from '../types/configuration-common-form.type';
 import { TConfigurationDesignFormValue } from '../types/configuration-design-form.type';
 import { TConfigurationMDMFormValue } from '../types/configuration-mdm-form.type';
+import { ConfigurationService as SharedConfigurationService } from '../../shared/services/configuration.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigurationDetailsFacadeService {
   private readonly configurationService = inject(ConfigurationService);
+  private readonly sharedConfigurationService = inject(SharedConfigurationService);
   private readonly _configurationId: WritableSignal<number | null> = signal(null);
   private readonly _currentConfiguration: WritableSignal<TConfigurationDTO | null> = signal(null);
   private readonly _reloadTrigger: WritableSignal<number> = signal(0);
-  private readonly router: Router = inject(Router);
+  private readonly _hasUnsavedChanges: WritableSignal<boolean> = signal(false);
 
   private configurationCommonValue: TConfigurationCommonFormValue | null = null;
   private configurationDesignValue: TConfigurationDesignFormValue | null = null;
@@ -26,6 +27,7 @@ export class ConfigurationDetailsFacadeService {
   currentConfiguration = this._currentConfiguration.asReadonly();
   configurationId = this._configurationId.asReadonly();
   reloadTrigger = this._reloadTrigger.asReadonly();
+  hasUnsavedChanges = this._hasUnsavedChanges.asReadonly();
   appSettings: Signal<TAppSettingsDTO[]> = computed(() => {
     const config = this._currentConfiguration();
 
@@ -46,7 +48,12 @@ export class ConfigurationDetailsFacadeService {
     return [];
   });
 
+  markUnsavedChanges(): void {
+    this._hasUnsavedChanges.set(true);
+  }
+
   setCurrentConfigurationId(id: number | null): void {
+    this._hasUnsavedChanges.set(false);
     this._configurationId.set(id);
     this._reloadTrigger.update((v) => v + 1);
 
@@ -60,6 +67,8 @@ export class ConfigurationDetailsFacadeService {
   }
 
   setConfigurationCommonValue(formValue: TConfigurationCommonFormValue): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -75,14 +84,24 @@ export class ConfigurationDetailsFacadeService {
   }
 
   setConfigurationDesign(formValue: TConfigurationDesignFormValue): void {
+    this.markUnsavedChanges();
+
     this.configurationDesignValue = formValue;
+
+    this._currentConfiguration.update((config) => (config ? { ...config, ...formValue } : config));
   }
 
   setMDMSettings(formValue: TConfigurationMDMFormValue): void {
+    this.markUnsavedChanges();
+
     this.configurationMDMValue = formValue;
+
+    this._currentConfiguration.update((config) => (config ? { ...config, ...formValue } : config));
   }
 
   addAppSetting(appSetting: TAppSettingsDTO): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -109,6 +128,8 @@ export class ConfigurationDetailsFacadeService {
   }
 
   deleteAppSetting(id: number): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -128,6 +149,8 @@ export class ConfigurationDetailsFacadeService {
   }
 
   addFile(file: TConfigurationFileDTO): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -146,6 +169,8 @@ export class ConfigurationDetailsFacadeService {
   }
 
   deleteFile(fileId: number): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -212,12 +237,22 @@ export class ConfigurationDetailsFacadeService {
     this.configurationService
       .updateConfiguration(configuration)
       .pipe(take(1))
-      .subscribe(() => {
-        this.router.navigate(['home', 'configurations']);
+      .subscribe((saved) => {
+        if (!saved) {
+          return;
+        }
+
+        this.sharedConfigurationService.fetchAll();
+
+        this._configurationId.set(saved.id ?? null);
+        this._currentConfiguration.set(saved);
+        this._hasUnsavedChanges.set(false);
       });
   }
 
   updateFile(file: TConfigurationFileDTO): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;
@@ -236,6 +271,8 @@ export class ConfigurationDetailsFacadeService {
   }
 
   removeFileChange(id: number, value: boolean): void {
+    this.markUnsavedChanges();
+
     this._currentConfiguration.update((config) => {
       if (!config) {
         return config;

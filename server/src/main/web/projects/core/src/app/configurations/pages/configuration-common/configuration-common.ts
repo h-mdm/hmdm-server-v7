@@ -14,7 +14,6 @@ import {
 import { BOOLEAN_RADIO_OPTIONS } from '../../../shared/const/boolean-radio-options.const';
 import { ConfigurationCommonFormConfig } from '../../configs/configuration-common-form.config';
 import { BRIGHTNESS_RADIO_OPTIONS } from '../../const/brightness-radio.const';
-import { UPDATE_RADIO_OPTIONS } from '../../const/update-radio.const';
 import { TRACKING_OPTIONS } from '../../const/tracking-options.const';
 import { PERMISSIONS_OPTIONS } from '../../const/permissions-options.const';
 import { NOTIFICATIONS_OPTIONS } from '../../const/notifications-options.const';
@@ -25,6 +24,10 @@ import { DOWNLOAD_OPTIONS } from '../../const/download-options.const';
 import { TConfigurationCommonFormValue } from '../../types/configuration-common-form.type';
 import { SYSTEM_RADIO_OPTIONS } from '../../const/system-radio.const';
 import { ConfigurationDetailsFacadeService } from '../../services/configuration-details-facade.service';
+
+function getTimeZoneMode(timeZone: string | null | undefined): string {
+  return timeZone ? 'manual' : 'default';
+}
 
 @Component({
   selector: 'core-configuration-common',
@@ -51,7 +54,6 @@ export class ConfigurationCommon extends BaseComponent implements OnInit {
   commonRadioOptions = BOOLEAN_RADIO_OPTIONS;
   brightnessRadioOptions = BRIGHTNESS_RADIO_OPTIONS;
   systemRadioOptions = SYSTEM_RADIO_OPTIONS;
-  updateRadioOptions = UPDATE_RADIO_OPTIONS;
   trackingOptions = TRACKING_OPTIONS;
   permissionsOptions = PERMISSIONS_OPTIONS;
   notificationOptions = NOTIFICATIONS_OPTIONS;
@@ -75,8 +77,9 @@ export class ConfigurationCommon extends BaseComponent implements OnInit {
           {
             ...currentConfig,
             usbStorage: currentConfig.usbStorage ?? false,
-            passwordMode: currentConfig.passwordMode ?? 'DISABLED',
+            passwordMode: currentConfig.passwordMode ?? '',
             runDefaultLauncher: currentConfig.runDefaultLauncher ?? false,
+            timeZoneMode: getTimeZoneMode(currentConfig.timeZone),
           },
           { emitEvent: false },
         );

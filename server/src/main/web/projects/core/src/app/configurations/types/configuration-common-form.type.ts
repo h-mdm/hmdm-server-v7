@@ -25,7 +25,7 @@ export type TConfigurationCommonFormValue = {
   systemUpdateType: number;
   systemUpdateFrom: string | null;
   systemUpdateTo: string | null;
-  scheduleAppUpdates: boolean;
+  scheduleAppUpdate: boolean;
   appUpdateFrom: string | null;
   appUpdateTo: string | null;
   downloadUpdates: string;

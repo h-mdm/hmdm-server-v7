@@ -33,10 +33,8 @@ export class ConfigurationAppDetailsDialog extends DialogBase implements OnInit 
   ngOnInit(): void {
     this.appName.set(this.data.app.name || '');
 
-    console.log(this.data.app);
-
     this.formGroup.patchValue({
-      keyCode: this.data.app.keyCode,
+      keyCode: this.data.app.keyCode?.toString() ?? '',
       longTap: this.data.app.longTap,
       bottom: this.data.app.bottom,
     });
@@ -45,7 +43,6 @@ export class ConfigurationAppDetailsDialog extends DialogBase implements OnInit 
   override onSave(): void {}
 
   onFormChange(value: TConfigurationAppDetailsFormValue): void {
-    const id = this.data.app.id;
-    this.configurationAppsFacadeService.updateAppDetails(id, value);
+    this.configurationAppsFacadeService.updateAppDetails(this.data.app, value);
   }
 }

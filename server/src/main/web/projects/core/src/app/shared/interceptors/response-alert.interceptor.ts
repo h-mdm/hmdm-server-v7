@@ -6,6 +6,8 @@ import { ALERT_STATUS_MESSAGE_MAPPER } from '../const/alert-status-mapper.const'
 import { SnackBarService } from '../services/snack-bar.service';
 import { SKIP_ALERT } from 'hmdm-ui-kit';
 
+const UNKNOWN_ERROR_MESSAGE = 'alerts.unknown.error';
+
 export const responseAlertInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBarService = inject(SnackBarService);
   const skipAlert = req.context.get(SKIP_ALERT);
@@ -20,25 +22,19 @@ export const responseAlertInterceptor: HttpInterceptorFn = (req, next) => {
       ) {
         console.log('Error intercepted:');
         console.log(event);
-        const message = event.body['message'] || 'ALERTS.UNKNOWN_ERROR';
+        const message = event.body['message'] || UNKNOWN_ERROR_MESSAGE;
         snackBarService.error(message);
       }
     }),
 
     catchError((error: HttpErrorResponse) => {
-      if (!skipAlert) {
-        const message = getMessage(error);
-        message && snackBarService.error(message);
+      if (!skipAlert && error.status !== 403) {
+        snackBarService.error(getMessage(error));
       }
       return throwError(() => error);
     }),
   );
 };
 
-const getMessage = (request: HttpErrorResponse): string => {
-  let message = '';
-
-  message = ALERT_STATUS_MESSAGE_MAPPER[request.status];
-
-  return message || '';
-};
+const getMessage = (request: HttpErrorResponse): string =>
+  ALERT_STATUS_MESSAGE_MAPPER[request.status] || UNKNOWN_ERROR_MESSAGE;

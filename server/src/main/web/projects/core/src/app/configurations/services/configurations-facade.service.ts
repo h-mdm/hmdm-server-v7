@@ -2,6 +2,7 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 import { take } from 'rxjs';
 import { ConfigurationService } from '../../entity/configuration/services/configuration.service';
 import { TConfigurationDTO } from '../../entity/configuration/types/configuration-dto.type';
+import { ConfigurationService as SharedConfigurationService } from '../../shared/services/configuration.service';
 import { TConfigurationCopyFormValue } from '../types/configuration-copy-form.type';
 
 @Injectable({
@@ -9,6 +10,7 @@ import { TConfigurationCopyFormValue } from '../types/configuration-copy-form.ty
 })
 export class ConfigurationsFacadeService {
   private readonly configurationsService = inject(ConfigurationService);
+  private readonly sharedConfigurationService = inject(SharedConfigurationService);
 
   private readonly _configurations: WritableSignal<TConfigurationDTO[]> = signal([]);
   private readonly term: WritableSignal<string> = signal('');
@@ -38,6 +40,7 @@ export class ConfigurationsFacadeService {
       .pipe(take(1))
       .subscribe(() => {
         this.searchConfigurations();
+        this.sharedConfigurationService.fetchAll();
       });
   }
 
@@ -47,6 +50,7 @@ export class ConfigurationsFacadeService {
       .pipe(take(1))
       .subscribe(() => {
         this.searchConfigurations();
+        this.sharedConfigurationService.fetchAll();
       });
   }
 }

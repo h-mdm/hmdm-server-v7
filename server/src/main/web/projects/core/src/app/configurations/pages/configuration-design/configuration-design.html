@@ -1,9 +1,11 @@
 <form [formGroup]="formGroup" class="design">
   <div class="design-row">
-    <hmdm-checkbox
-      formControlName="useDefaultDesignSettings"
-      [label]="'form.configuration.settings.design.use.default' | translate"
-    ></hmdm-checkbox>
+    <!--
+      <hmdm-checkbox
+        formControlName="useDefaultDesignSettings"
+        [label]="'form.configuration.settings.design.use.default' | translate"
+      ></hmdm-checkbox>
+    -->
 
     <hmdm-checkbox
       formControlName="displayStatus"
@@ -12,15 +14,15 @@
   </div>
 
   <div class="design-double">
-    <hmdm-text-input
+    <hmdm-color-input
       formControlName="backgroundColor"
       [label]="'form.configuration.settings.design.color.background' | translate"
-    ></hmdm-text-input>
+    ></hmdm-color-input>
 
-    <hmdm-text-input
+    <hmdm-color-input
       formControlName="textColor"
       [label]="'form.configuration.settings.design.color.app.names' | translate"
-    ></hmdm-text-input>
+    ></hmdm-color-input>
 
     <hmdm-text-input
       formControlName="backgroundImageUrl"

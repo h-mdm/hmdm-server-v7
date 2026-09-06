@@ -2,6 +2,7 @@ import { EApplicationType } from '../enum/application-type.enum';
 import { TApplicationType } from './application-type.type';
 
 export type TCreateApplicationRequestBase = {
+  id?: number;
   name: string;
   showIcon: boolean;
   iconId?: number | null;

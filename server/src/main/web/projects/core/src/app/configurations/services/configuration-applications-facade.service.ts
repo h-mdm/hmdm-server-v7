@@ -8,6 +8,12 @@ import { APP_ACTION } from '../const/app-action.const';
 import { ConfigurationDetailsFacadeService } from './configuration-details-facade.service';
 import { TConfigurationAppDetailsFormValue } from '../types/configuration-app-details-form.type';
 
+function toKeyCode(value: string): number | null {
+  const parsed = Number(value);
+
+  return value === '' || Number.isNaN(parsed) ? null : parsed;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -60,13 +66,13 @@ export class ConfigurationAppsFacadeService {
   );
   applicationsIdOptions = computed(() =>
     this._allApplications().map((app) => ({
-      viewValue: app.name,
+      viewValue: app.pkg ? `${app.name} (${app.pkg})` : app.name,
       value: app.id,
     })),
   );
   applicationsVersionIdOptions = computed(() =>
     this._allApplications().map((app) => ({
-      viewValue: app.name,
+      viewValue: app.pkg ? `${app.name} (${app.pkg})` : app.name,
       value: app.usedVersionId,
     })),
   );
@@ -138,6 +144,8 @@ export class ConfigurationAppsFacadeService {
   }
 
   addApplication(app: TApplicationDTO): void {
+    this.configurationDetailsFacadeService.markUnsavedChanges();
+
     const currentApps = this._applications();
     this._applications.set([...currentApps, { ...app, actionChanged: true }]);
   }
@@ -148,6 +156,8 @@ export class ConfigurationAppsFacadeService {
   }
 
   setAppAction(app: TApplicationDTO, value: number): void {
+    this.configurationDetailsFacadeService.markUnsavedChanges();
+
     this._applications.update((apps) =>
       apps.map((a) =>
         a.id === app.id && a.version === app.version
@@ -158,20 +168,39 @@ export class ConfigurationAppsFacadeService {
   }
 
   setAppIcon(app: TApplicationDTO, value: boolean): void {
+    this.configurationDetailsFacadeService.markUnsavedChanges();
+
     this._applications.update((apps) =>
-      apps.map((a) => (a.id === app.id && a.version === app.version ? { ...a, showIcon: value } : a)),
+      apps.map((a) =>
+        a.id === app.id && a.version === app.version ? { ...a, showIcon: value } : a,
+      ),
     );
   }
 
   setAppOrder(app: TApplicationDTO, value: number | null): void {
+    this.configurationDetailsFacadeService.markUnsavedChanges();
+
     this._applications.update((apps) =>
-      apps.map((a) => (a.id === app.id && a.version === app.version ? { ...a, order: value } : a)),
+      apps.map((a) =>
+        a.id === app.id && a.version === app.version ? { ...a, screenOrder: value } : a,
+      ),
     );
   }
 
-  updateAppDetails(id: number, value: TConfigurationAppDetailsFormValue): void {
+  updateAppDetails(app: TApplicationDTO, value: TConfigurationAppDetailsFormValue): void {
+    this.configurationDetailsFacadeService.markUnsavedChanges();
+
     this._applications.update((apps) =>
-      apps.map((app) => (app.id === id ? { ...app, details: value } : app)),
+      apps.map((a) =>
+        a.id === app.id && a.version === app.version
+          ? {
+              ...a,
+              keyCode: toKeyCode(value.keyCode),
+              bottom: value.bottom,
+              longTap: value.longTap,
+            }
+          : a,
+      ),
     );
   }
 

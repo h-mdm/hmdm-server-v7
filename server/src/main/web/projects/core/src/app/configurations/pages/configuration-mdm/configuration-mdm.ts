@@ -51,8 +51,12 @@ export class ConfigurationMdm extends BaseComponent implements OnInit {
 
     effect(() => {
       const currentConfig = this.configurationDetailsFacadeService.currentConfiguration();
-      currentConfig &&
-        this.formGroup.patchValue({
+      if (!currentConfig) {
+        return;
+      }
+
+      this.formGroup.patchValue(
+        {
           kioskMode: currentConfig?.kioskMode || false,
           mainAppId: currentConfig?.mainAppId || null,
           contentAppId: currentConfig?.contentAppId || null,
@@ -81,7 +85,11 @@ export class ConfigurationMdm extends BaseComponent implements OnInit {
 
           restrictions: currentConfig.restrictions || '',
           newServerUrl: currentConfig.newServerUrl || '',
-        });
+        },
+        { emitEvent: false },
+      );
+
+      this.isKioskMode.set(this.formGroup.controls.kioskMode.value);
     });
   }
 

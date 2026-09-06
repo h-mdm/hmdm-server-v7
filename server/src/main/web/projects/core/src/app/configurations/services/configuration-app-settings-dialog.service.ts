@@ -19,6 +19,7 @@ export class ConfigurationAppSettingsDialogService {
   openAddDialog(): void {
     this.dialog
       .open(ConfigurationAppSettingsDialog, {
+        width: '600px',
         autoFocus: false,
       })
       .afterClosed()
@@ -38,6 +39,7 @@ export class ConfigurationAppSettingsDialogService {
           applicationName: application ? application.name : '',
           applicationPkg: application ? application.pkg : '',
           lastUpdate: new Date().getTime(),
+          type: 'STRING',
         };
 
         this.configurationDetailsFacadeSerivice.addAppSetting(appSetting);
@@ -47,6 +49,7 @@ export class ConfigurationAppSettingsDialogService {
   openEditDialog(setting: TAppSettingsDTO): void {
     this.dialog
       .open(ConfigurationAppSettingsDialog, {
+        width: '600px',
         data: setting,
         autoFocus: false,
       })

@@ -23,6 +23,7 @@ import { ApkForm } from '../apk-form/apk-form';
 import { ApplicationIconForm } from '../application-icon-form/application-icon-form';
 import { SystemActionForm } from '../system-action-form/system-action-form';
 import { WebPageForm } from '../web-page-form/web-page-form';
+import { EApplicationType } from '../../../entity/application/enum/application-type.enum';
 import { TApplicationDTO } from '../../../entity/application/types/application-dto.type';
 import { TApplicationType } from '../../../entity/application/types/application-type.type';
 
@@ -135,10 +136,23 @@ export class ApplicationForm extends BaseComponent implements OnInit {
     };
 
     const formValue: TApplicationFormEmitValue = {
+      ...this.getEditedRecordFields(),
       ...this.applicationFormValue,
       ...iconData,
     };
 
     this.formChange.emit(formValue);
+  }
+
+  private getEditedRecordFields(): Partial<TApplicationDTO> {
+    const initialValue = this.initialValue();
+
+    if (!initialValue) {
+      return {};
+    }
+
+    const { latestVersion, ...rest } = initialValue;
+
+    return initialValue.type === EApplicationType.APP ? rest : initialValue;
   }
 }

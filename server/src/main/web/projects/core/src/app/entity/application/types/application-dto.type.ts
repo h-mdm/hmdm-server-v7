@@ -13,6 +13,7 @@ export type TApplicationDTO = {
   iconText: string | null;
   id: number;
   intent: string | null;
+  keyCode: number | null;
   latestVersion: number;
   latestVersionText: string | null;
   longTap: boolean;

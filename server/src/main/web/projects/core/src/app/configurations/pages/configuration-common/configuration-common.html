@@ -127,11 +127,13 @@
 
   <div class="common-double">
     <hmdm-selector
+      formControlName="passwordMode"
       [label]="'form.configuration.settings.password.mode' | translate"
       [options]="passwordOptions"
     ></hmdm-selector>
 
     <hmdm-selector
+      formControlName="downloadUpdates"
       [label]="'form.configuration.settings.download.updates' | translate"
       [options]="downloadOptions"
     ></hmdm-selector>
@@ -152,11 +154,11 @@
 
   <div class="common-toggle">
     <hmdm-checkbox
-      formControlName="scheduleAppUpdates"
+      formControlName="scheduleAppUpdate"
       [label]="'form.configuration.settings.system.schedule.app.update' | translate"
     ></hmdm-checkbox>
 
-    @if (formValue.scheduleAppUpdates) {
+    @if (formValue.scheduleAppUpdate) {
       <div class="common-timepicker">
         <hmdm-timepicker
           formControlName="appUpdateFrom"

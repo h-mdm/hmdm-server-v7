@@ -1,7 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog, InformDialog } from 'hmdm-ui-kit';
-import { catchError, filter, finalize, of, switchMap, take, takeUntil } from 'rxjs';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { SnackBarService } from '../../shared/services/snack-bar.service';
 import { EApplicationType } from '../../entity/application/enum/application-type.enum';
 import { ApplicationService } from '../../entity/application/services/application.service';
@@ -13,7 +23,18 @@ import {
   DuplicatePkgDialog,
   TDuplicatePkgDialogResult,
 } from '../components/duplicate-pkg-dialog/duplicate-pkg-dialog';
+import { TVersionDTO } from '../../entity/application/types/version-dto.type';
 import { ApplicationFacadeService } from './application-facade.service';
+
+type TSaveResult =
+  | { outcome: 'saved'; entity: TApplicationDTO | TVersionDTO | null }
+  | { outcome: 'name-taken' }
+  | { outcome: 'cancelled' };
+
+const saved = (entity: TApplicationDTO | TVersionDTO | null): TSaveResult => ({
+  outcome: 'saved',
+  entity,
+});
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationDialogService {
@@ -32,18 +53,20 @@ export class ApplicationDialogService {
         switchMap((data) => {
           instance.isSaving.set(true);
           return this.resolveAndSave(data, true).pipe(
-            catchError(() => of(null)),
+            catchError(() => of<TSaveResult>({ outcome: 'cancelled' })),
             finalize(() => instance.isSaving.set(false)),
           );
         }),
       )
-      .subscribe((res) => {
-        if (!res) return;
-
-        if ('__nameTaken' in res) {
+      .subscribe((result) => {
+        if (result.outcome === 'name-taken') {
           instance.nameError.set('error.app.name.exists');
           return;
         }
+
+        if (result.outcome !== 'saved' || !result.entity) return;
+
+        const res = result.entity;
 
         dialogRef.close();
         this.applicationFacadeService.searchApplications();
@@ -67,23 +90,28 @@ export class ApplicationDialogService {
         takeUntil(dialogRef.beforeClosed()),
         switchMap((data) => {
           instance.isSaving.set(true);
-          return this.resolveAndSave(data, false).pipe(
-            catchError(() => of(null)),
+          // The id decides insert vs update on the backend, so pin it here
+          // rather than relying on the form to carry it through.
+          return this.resolveAndSave({ ...data, id: application.id }, false).pipe(
+            catchError(() => of<TSaveResult>({ outcome: 'cancelled' })),
             finalize(() => instance.isSaving.set(false)),
           );
         }),
       )
-      .subscribe((res) => {
-        if (!res || '__nameTaken' in res) return;
+      .subscribe((result) => {
+        if (result.outcome !== 'saved') return;
 
         dialogRef.close();
         this.applicationFacadeService.searchApplications();
       });
   }
 
-  private resolveAndSave(data: TApplicationFormEmitValue, isNewApp: boolean) {
+  private resolveAndSave(
+    data: TApplicationFormEmitValue,
+    isNewApp: boolean,
+  ): Observable<TSaveResult> {
     if (data.type !== EApplicationType.APP || !data.filePath) {
-      return this.applicationService.createApplication(data);
+      return this.applicationService.createApplication(data).pipe(map(saved));
     }
 
     const appData = data;
@@ -105,26 +133,28 @@ export class ApplicationDialogService {
     return this.applicationService.validatePkg(validateBody).pipe(
       switchMap((duplicates) => {
         if (!duplicates?.length) {
-          return this.applicationService.createApplication(data);
+          return this.applicationService.createApplication(data).pipe(map(saved));
         }
 
         // Single match and version is new → silently add a new version
         if (duplicates.length === 1 && !appData.versionExists) {
-          return this.applicationService.createApplicationVersion({
-            applicationId: duplicates[0].id,
-            version: appData.version,
-            arch: appData.arch || null,
-            filePath: appData.filePath,
-            versionCode: appData.versionCode,
-            pkg: appData.pkg,
-            name: appData.name,
-            type: appData.type,
-            runAtBoot: appData.runAtBoot,
-            runAfterInstall: appData.runAfterInstall,
-            showIcon: appData.showIcon,
-            system: appData.system,
-            autoUpdateDisplayed: true,
-          });
+          return this.applicationService
+            .createApplicationVersion({
+              applicationId: duplicates[0].id,
+              version: appData.version,
+              arch: appData.arch || null,
+              filePath: appData.filePath,
+              versionCode: appData.versionCode,
+              pkg: appData.pkg,
+              name: appData.name,
+              type: appData.type,
+              runAtBoot: appData.runAtBoot,
+              runAfterInstall: appData.runAfterInstall,
+              showIcon: appData.showIcon,
+              system: appData.system,
+              autoUpdateDisplayed: true,
+            })
+            .pipe(map(saved));
         }
 
         return this.dialog
@@ -139,33 +169,35 @@ export class ApplicationDialogService {
           })
           .afterClosed()
           .pipe(
-            switchMap((result: TDuplicatePkgDialogResult | null) => {
-              if (!result) return of(null);
+            switchMap((result: TDuplicatePkgDialogResult | null): Observable<TSaveResult> => {
+              if (!result) return of({ outcome: 'cancelled' });
 
               if (result.action === 'name-taken') {
-                return of({ __nameTaken: true } as const);
+                return of({ outcome: 'name-taken' });
               }
 
               if (result.action === 'new-version') {
-                return this.applicationService.createApplicationVersion({
-                  applicationId: result.applicationId,
-                  version: appData.version,
-                  arch: appData.arch || null,
-                  filePath: appData.filePath,
-                  versionCode: appData.versionCode,
-                  pkg: appData.pkg,
-                  name: appData.name,
-                  type: appData.type,
-                  runAtBoot: appData.runAtBoot,
-                  runAfterInstall: appData.runAfterInstall,
-                  showIcon: appData.showIcon,
-                  system: appData.system,
-                  autoUpdateDisplayed: true,
-                });
+                return this.applicationService
+                  .createApplicationVersion({
+                    applicationId: result.applicationId,
+                    version: appData.version,
+                    arch: appData.arch || null,
+                    filePath: appData.filePath,
+                    versionCode: appData.versionCode,
+                    pkg: appData.pkg,
+                    name: appData.name,
+                    type: appData.type,
+                    runAtBoot: appData.runAtBoot,
+                    runAfterInstall: appData.runAfterInstall,
+                    showIcon: appData.showIcon,
+                    system: appData.system,
+                    autoUpdateDisplayed: true,
+                  })
+                  .pipe(map(saved));
               }
 
               // 'new-app' or 'change-pkg' — proceed with normal application creation
-              return this.applicationService.createApplication(data);
+              return this.applicationService.createApplication(data).pipe(map(saved));
             }),
           );
       }),

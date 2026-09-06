@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,7 +10,7 @@ import { ConfigurationCommon } from '../configuration-common/configuration-commo
 import { ConfigurationDesign } from '../configuration-design/configuration-design';
 import { ConfigurationFiles } from '../configuration-files/configuration-files';
 import { ConfigurationMdm } from '../configuration-mdm/configuration-mdm';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ConfigurationAppsFacadeService } from '../../services/configuration-applications-facade.service';
 
 @Component({
@@ -27,6 +27,7 @@ import { ConfigurationAppsFacadeService } from '../../services/configuration-app
     ConfigurationAppSettings,
     ConfigurationFiles,
     MatButtonModule,
+    RouterLink,
   ],
 })
 export class ConfigurationDetails extends BaseComponent implements OnInit {
@@ -34,19 +35,28 @@ export class ConfigurationDetails extends BaseComponent implements OnInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly configurationDetailsFacadeService = inject(ConfigurationDetailsFacadeService);
   private readonly configurationAppsFacadeService = inject(ConfigurationAppsFacadeService);
-  private isUpdateMode: boolean = false;
+
+  configurationName: Signal<string> = computed(
+    () => this.configurationDetailsFacadeService.currentConfiguration()?.name ?? '',
+  );
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.configurationDetailsFacadeService.hasUnsavedChanges()) {
+      event.preventDefault();
+    }
+  }
 
   ngOnInit(): void {
     const id = Number.parseInt(this.route.snapshot.paramMap.get('configurationId') ?? '', 10);
 
-    this.isUpdateMode = !!id;
     this.configurationDetailsFacadeService.setCurrentConfigurationId(id ?? null);
   }
 
   onSave(): void {
     const applications = this.configurationAppsFacadeService.applications();
 
-    if (this.isUpdateMode) {
+    if (this.configurationDetailsFacadeService.configurationId()) {
       const config = this.configurationDetailsFacadeService.getUpdatedConfiguration();
 
       if (!config) {

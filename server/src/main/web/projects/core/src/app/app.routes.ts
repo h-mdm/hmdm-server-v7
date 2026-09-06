@@ -6,8 +6,9 @@ import { isAnonymousGuard } from './shared/guards/is-anonymous.guard';
 import { passwordResetRequiredGuard } from './shared/guards/password-reset-required.guard';
 import { isSuperAdminGuard } from './shared/guards/is-super-admin.guard';
 import { loadRemoteModule } from '@angular-architects/native-federation';
-import {isLicensesAvailableGuard} from './shared/guards/is-licenses-available.guard';
-import {isPluginValidGuard} from './shared/guards/is-plugin-valid.guard';
+import { isLicensesAvailableGuard } from './shared/guards/is-licenses-available.guard';
+import { isPluginValidGuard } from './shared/guards/is-plugin-valid.guard';
+import { unsavedConfigurationGuard } from './shared/guards/unsaved-configuration.guard';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,8 @@ export const routes: Routes = [
       { path: 'sign-in', component: SignIn },
       {
         path: 'missing-license',
-        loadComponent: () => import('./auth/components/license-dialog/license-dialog').then((m) => m.LicenseDialog),
+        loadComponent: () =>
+          import('./auth/components/license-dialog/license-dialog').then((m) => m.LicenseDialog),
       },
       {
         path: 'forgot-password',
@@ -112,6 +114,7 @@ export const routes: Routes = [
           import('./configurations/pages/configuration-details/configuration-details').then(
             (m) => m.ConfigurationDetails,
           ),
+        canDeactivate: [unsavedConfigurationGuard],
       },
       {
         path: 'configurations/details/:configurationId',
@@ -119,6 +122,7 @@ export const routes: Routes = [
           import('./configurations/pages/configuration-details/configuration-details').then(
             (m) => m.ConfigurationDetails,
           ),
+        canDeactivate: [unsavedConfigurationGuard],
       },
 
       {
