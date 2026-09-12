@@ -266,6 +266,7 @@
   "error.duplicate.group": "Aynı ada sahip bir grup zaten var",
   "error.duplicate.application": "Bu paket kimliğine ve sürümüne sahip bir uygulama zaten var",
   "error.duplicate.application.name": "Bu adda bir uygulama zaten var",
+  "error.duplicate.application.setting": "Bu öznitelik zaten mevcut",
   "error.recent.application.version.exists": "Daha yeni bir uygulama sürümü var",
   "error.common.application.access.prohibited": "Ortak uygulamaların yönetimi yalnızca Süper Yönetici tarafından yapılabilir",
   "error.application.config.reference.exists": "Uygulama yapılandırmalarda kullanılıyor ve silinemiyor",

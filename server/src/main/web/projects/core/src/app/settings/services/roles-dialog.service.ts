@@ -5,6 +5,7 @@ import { filter, switchMap, take } from 'rxjs';
 import { TRoleDTO } from '../../entity/role/types/role-dto.type';
 import { RoleDialog } from '../components/role-dialog/role-dialog';
 import { RoleFacadeService } from './role-facade.service';
+import { UsersFacadeService } from './users-facade.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { RoleFacadeService } from './role-facade.service';
 export class RolesDialogService {
   private readonly dialog: MatDialog = inject(MatDialog);
   private readonly roleFacadeService: RoleFacadeService = inject(RoleFacadeService);
+  private readonly usersFacadeService: UsersFacadeService = inject(UsersFacadeService);
 
   openAddRole(): void {
     this.dialog
@@ -22,7 +24,7 @@ export class RolesDialogService {
         filter(Boolean),
         switchMap((roleData) => this.roleFacadeService.createRole(roleData)),
       )
-      .subscribe(() => this.roleFacadeService.loadRoles());
+      .subscribe(() => this.reloadRoles());
   }
 
   openEditRole(role: TRoleDTO): void {
@@ -39,7 +41,12 @@ export class RolesDialogService {
           return this.roleFacadeService.updateRole(role.id, roleData);
         }),
       )
-      .subscribe(() => this.roleFacadeService.loadRoles());
+      .subscribe(() => this.reloadRoles());
+  }
+
+  private reloadRoles(): void {
+    this.roleFacadeService.loadRoles();
+    this.usersFacadeService.fetchUserRoles();
   }
 
   openDeleteRole(role: TRoleDTO): void {
@@ -58,6 +65,6 @@ export class RolesDialogService {
         filter(Boolean),
         switchMap(() => this.roleFacadeService.deleteRole(role.id)),
       )
-      .subscribe(() => this.roleFacadeService.loadRoles());
+      .subscribe(() => this.reloadRoles());
   }
 }

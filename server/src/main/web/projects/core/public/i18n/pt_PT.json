@@ -265,6 +265,7 @@
   "error.duplicate.group": "Um grupo com esse mesmo nome já existe",
   "error.duplicate.application": "Já existe uma aplicação com esse ID de pacote e versão",
   "error.duplicate.application.name": "Já existe uma aplicação com esse nome",
+  "error.duplicate.application.setting": "Este atributo já existe",
   "error.recent.application.version.exists": "Existe uma versão mais recente da aplicação",
   "error.common.application.access.prohibited": "O gerenciamento das aplicações comuns é permitido apenas pelo Super-Administrador",
   "error.application.config.reference.exists": "A aplicação está sendo usada nas configurações e não pode ser excluída",

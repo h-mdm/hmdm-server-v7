@@ -266,6 +266,7 @@
   "error.duplicate.group": "Группа с таким именем уже существует",
   "error.duplicate.application": "Приложение c таким ID пакета и версией уже существует",
   "error.duplicate.application.name": "Приложение с таким именем уже существует",
+  "error.duplicate.application.setting": "Этот атрибут уже существует",
   "error.recent.application.version.exists": "Существует более поздняя версия приложения",
   "error.common.application.access.prohibited": "Управлять общим приложением может только Супер-Администратор",
   "error.application.config.reference.exists": "Приложение используется в конфигурациях и не может быть удалено",

@@ -9,6 +9,6 @@ export type TConfigurationFileDTO = {
   fileId: number;
   url: string;
   replaceVariables: boolean;
-  path: string;
-  overridePath?: boolean;
+  devicePath: string;
+  overrideDevicePath?: boolean;
 };

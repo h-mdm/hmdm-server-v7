@@ -47,8 +47,8 @@ export class ConfigurationFileDialogService {
           file,
           message: 'form.configuration.file.remove.prompt.1',
           title: '',
-          confirmButton: 'button.delete',
-          cancelButton: 'button.cancel',
+          confirmButtonText: 'button.delete',
+          cancelButtonText: 'button.cancel',
         },
       })
       .afterClosed()

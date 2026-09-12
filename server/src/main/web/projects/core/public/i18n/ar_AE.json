@@ -266,6 +266,7 @@
   "error.duplicate.group": "توجد بالفعل مجموعة بنفس الاسم",
   "error.duplicate.application": "الحزمة هذا والإصدار ID يوجد بالفعل تطبيق يحمل",
   "error.duplicate.application.name": "يوجد بالفعل تطبيق بهذا الاسم",
+  "error.duplicate.application.setting": "هذه السمة موجودة بالفعل",
   "error.recent.application.version.exists": "يوجد أحدث إصدار للتطبيق",
   "error.common.application.access.prohibited": "فقط Super-Administrator يُسمح بإدارة التطبيقات الشائعة بواسطة",
   "error.application.config.reference.exists": "التطبيق مستخدم في الاعدادات ولا يمكن حذفه",

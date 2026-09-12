@@ -272,6 +272,7 @@
   "error.duplicate.group": "A group with the same name already exists",
   "error.duplicate.application": "An application with this package ID and version already exists",
   "error.duplicate.application.name": "An application with this name already exists",
+  "error.duplicate.application.setting": "This attribute already exists",
   "error.recent.application.version.exists": "More recent application version exists",
   "error.common.application.access.prohibited": "Managing of the common applications is allowed by Super-Administrator only",
   "error.application.config.reference.exists": "The application is used in configurations and cannot be deleted",

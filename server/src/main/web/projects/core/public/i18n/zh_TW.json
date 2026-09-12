@@ -266,6 +266,7 @@
   "error.duplicate.group": "已經存在相同名稱的組合",
   "error.duplicate.application": "已經存在具有此程序包ID和版本的應用程式",
   "error.duplicate.application.name": "已經存在具有此名稱的應用程式",
+  "error.duplicate.application.setting": "此屬性已存在",
   "error.recent.application.version.exists": "存在較新的應用程式版本",
   "error.common.application.access.prohibited": "只有超級管理員才能管理常見應用程式",
   "error.application.config.reference.exists": "該應用程式已在配置中使用，無法刪除",

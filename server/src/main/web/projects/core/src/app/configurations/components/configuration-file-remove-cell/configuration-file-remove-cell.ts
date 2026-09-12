@@ -18,13 +18,11 @@ export class ConfigurationFileRemoveCell extends BaseCellRenderer implements OnI
     const data = this.params().data;
 
     if (data.remove) {
-      this.removeForm.setValue(true);
+      this.removeForm.setValue(true, { emitEvent: false });
     }
 
-    this.removeForm.valueChanges.pipe(this.untilDestroyed()).subscribe(() => {
-      console.log(this.removeForm.value);
-
-      this.configurationDetailsFacadeService.removeFileChange(data.id, this.removeForm.value);
+    this.removeForm.valueChanges.pipe(this.untilDestroyed()).subscribe((value) => {
+      this.configurationDetailsFacadeService.removeFileChange(data.id, value);
     });
   }
 }

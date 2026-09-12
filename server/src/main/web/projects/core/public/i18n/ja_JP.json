@@ -266,6 +266,7 @@
   "error.duplicate.group": "この名前のグループは既に存在します",
   "error.duplicate.application": "このパッケージ ID とバージョンのアプリケーションは既に存在します",
   "error.duplicate.application.name": "この名前のアプリケーションは既に存在します",
+  "error.duplicate.application.setting": "この属性は既に存在します",
   "error.recent.application.version.exists": "最新のアプリケーションバージョンが存在します",
   "error.common.application.access.prohibited": "共通アプリケーションの管理はスーパー管理者のみ許可されています",
   "error.application.config.reference.exists": "アプリケーションは構成で使用されており、削除できません",

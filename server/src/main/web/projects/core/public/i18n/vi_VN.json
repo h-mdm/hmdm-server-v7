@@ -257,6 +257,7 @@
   "error.duplicate.group": "Đã tồn tại nhóm với tên này",
   "error.duplicate.application": "Đã tồn tại ứng dụng với ID gói và phiên bản này",
   "error.duplicate.application.name": "Đã tồn tại ứng dụng với tên này",
+  "error.duplicate.application.setting": "Thuộc tính này đã tồn tại",
   "error.recent.application.version.exists": "Đã tồn tại phiên bản ứng dụng mới hơn",
   "error.common.application.access.prohibited": "Quản lý các ứng dụng chung chỉ được phép bởi Siêu-Quản trị viên",
   "error.application.config.reference.exists": "Ứng dụng đang được sử dụng trong cấu hình và không thể xóa",

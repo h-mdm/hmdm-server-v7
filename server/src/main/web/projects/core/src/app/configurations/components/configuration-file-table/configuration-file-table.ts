@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Table } from 'hmdm-ui-kit';
 import { ConfigurationFilesTableConfig } from '../../configs/configuration-files-table.config';
 import { ConfigurationDetailsFacadeService } from '../../services/configuration-details-facade.service';
@@ -15,12 +15,4 @@ export class ConfigurationFileTable {
 
   tableConfig = this.tableConfigService.getConfig();
   tableData = this.configurationDetailsFacadeService.configurationFiles;
-
-  constructor() {
-    effect(() => {
-      const data = this.tableData();
-
-      console.log('data', data);
-    });
-  }
 }

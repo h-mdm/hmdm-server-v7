@@ -35,6 +35,7 @@ export type TDetailsDTO = {
   iccid2: string;
   imsi2: string;
   serial: string;
+  mac?: string;
   cpu: string;
   latestDynamicData: TDynamicDTO;
   applications: TApplicationDTO[];

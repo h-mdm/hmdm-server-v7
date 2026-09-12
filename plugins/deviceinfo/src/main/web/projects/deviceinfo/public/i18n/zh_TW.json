@@ -73,6 +73,7 @@
 "plugin.deviceinfo.title.iccid2": "第二個SIM卡ICCID",		
 "plugin.deviceinfo.title.imsi2": "第二SIM卡IMSI",		
 "plugin.deviceinfo.title.serial": "序列號",		
+"plugin.deviceinfo.title.mac": "MAC位址",
 "plugin.deviceinfo.title.cpu": " CPU體系結構",		
 "plugin.deviceinfo.title.battery.level": "電池充電",		
 "plugin.deviceinfo.title.permission.1": "以設備管理員身份安裝的權限",		
