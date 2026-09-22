@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "Dahili sunucu hatası. Lütfen daha sonra tekrar deneyin.",
   "alerts.unknown.error": "Bilinmeyen bir hata oluştu.",
   "alerts.system.apps.filter": "Uygulama eklendi. Listede görüntülemek için filtre ayarlarında sistem uygulamalarının görüntülenmesini etkinleştirin.",
+  "alerts.application.shared": "Bu uygulama paylaşılmıştır ve düzenlemeye açık değildir. Bu uygulamanın başka bir sürümünü eklemek için yöneticiye başvurun veya 'Ekle' düğmesine tıklayın, APK dosyasını yükleyin ve uygulamayı yeniden adlandırın.",
 
   "validation.required": "Bu alan zorunludur",
   "validation.minlength": "Minimum uzunluk {{ requiredLength }} karakterdir",
@@ -1093,6 +1094,7 @@
   "tooltip.usage.byconfigurations": "Yapılandırmalar tarafından kullanılıyor",
   "tooltip.usage.byapps": "Uygulamalar tarafından kullanılıyor",
   "tooltip.usage.byicons": "Simgeler tarafından kullanılıyor",
+  "tooltip.application.shared": "Paylaşılan uygulama",
 
   "form.devices.label.params.more": "Daha fazla parametre",
   "form.devices.label.params.less": "Daha az parametre",

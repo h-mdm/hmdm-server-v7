@@ -238,6 +238,14 @@ export class ApplicationDialogService {
       });
   }
 
+  openSharedApplicationDialog(): void {
+    this.dialog.open(InformDialog, {
+      data: {
+        message: 'alerts.application.shared',
+      },
+    });
+  }
+
   openSystemAppMessageDialog(): void {
     this.dialog.open(InformDialog, {
       data: {

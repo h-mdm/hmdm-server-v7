@@ -14,6 +14,7 @@
       aria-autocomplete="none"
       formControlName="password"
       inputType="password"
+      [passwordToggle]="true"
       [label]="'form.configuration.settings.common.admin.pwd' | translate"
     ></hmdm-text-input>
 
@@ -117,11 +118,13 @@
     ></hmdm-checkbox>
 
     @if (formValue.manageVolume) {
-      <hmdm-slider
-        class="common-expandable"
-        formControlName="volume"
-        [label]="'form.configuration.settings.common.volume.value' | translate"
-      ></hmdm-slider>
+      <div class="common-volume">
+        <hmdm-slider
+          formControlName="volume"
+          [inline]="true"
+          [label]="'form.configuration.settings.common.volume.value' | translate"
+        ></hmdm-slider>
+      </div>
     }
   </div>
 
@@ -162,11 +165,13 @@
       <div class="common-timepicker">
         <hmdm-timepicker
           formControlName="appUpdateFrom"
+          [timeString]="true"
           [label]="'form.configuration.settings.system.update.time.from' | translate"
         ></hmdm-timepicker>
 
         <hmdm-timepicker
           formControlName="appUpdateTo"
+          [timeString]="true"
           [label]="'form.configuration.settings.system.update.time.to' | translate"
         ></hmdm-timepicker>
       </div>
@@ -188,11 +193,13 @@
 
       <hmdm-timepicker
         formControlName="systemUpdateFrom"
+        [timeString]="true"
         [label]="'form.configuration.settings.system.update.time.from' | translate"
       ></hmdm-timepicker>
 
       <hmdm-timepicker
         formControlName="systemUpdateTo"
+        [timeString]="true"
         [label]="'form.configuration.settings.system.update.time.to' | translate"
       ></hmdm-timepicker>
     </div>

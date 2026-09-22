@@ -26,4 +26,5 @@ export class Slider extends BaseControlValueAccessor<number> {
   max: InputSignal<number> = input<number>(100);
   step: InputSignal<number> = input<number>(1);
   showThumbLabel: InputSignal<boolean> = input<boolean>(true);
+  inline: InputSignal<boolean> = input<boolean>(false);
 }

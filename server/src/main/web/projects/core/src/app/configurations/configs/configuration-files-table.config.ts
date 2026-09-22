@@ -39,6 +39,7 @@ export class ConfigurationFilesTableConfig {
           title: '',
           cellRenderer: ConfigurationFileActionCell,
           stickyEnd: true,
+          width: '120px',
         },
       ],
     };

@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "Interner Serverfehler. Bitte versuchen Sie es später erneut.",
   "alerts.unknown.error": "Ein unbekannter Fehler ist aufgetreten.",
   "alerts.system.apps.filter": "Die Anwendung wurde hinzugefügt. Um sie in der Liste anzuzeigen, aktivieren Sie die Anzeige von Systemanwendungen in den Filtereinstellungen.",
+  "alerts.application.shared": "Diese Anwendung ist freigegeben und kann nicht bearbeitet werden. Um eine andere Version dieser App hinzuzufügen, wenden Sie sich an den Administrator oder klicken Sie auf „Hinzufügen“, laden Sie die APK hoch und benennen Sie die Anwendung um.",
 
   "validation.required": "Dieses Feld ist erforderlich",
   "validation.minlength": "Die Mindestlänge beträgt {{ requiredLength }} Zeichen",
@@ -1094,6 +1095,7 @@
   "tooltip.usage.byconfigurations": "Wird von Konfigurationen verwendet",
   "tooltip.usage.byapps": "Wird von Anwendungen verwendet",
   "tooltip.usage.byicons": "Wird von Symbolen verwendet",
+  "tooltip.application.shared": "Freigegebene Anwendung",
 
   "form.devices.label.params.more": "Weitere Parameter",
   "form.devices.label.params.less": "Weniger Parameter",

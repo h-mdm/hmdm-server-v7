@@ -60,7 +60,7 @@ export class ConfigurationAppSettingsDialogService {
           return;
         }
 
-        this.configurationDetailsFacadeSerivice.addAppSetting({
+        this.configurationDetailsFacadeSerivice.updateAppSetting(setting, {
           ...setting,
           ...val,
           applicationId: val.applicationId ?? setting.applicationId,

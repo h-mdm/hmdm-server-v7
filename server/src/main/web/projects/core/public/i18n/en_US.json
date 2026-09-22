@@ -47,6 +47,7 @@
   "alerts.internal.server.error": "Internal server error. Please try again later.",
   "alerts.unknown.error": "An unknown error has occurred.",
   "alerts.system.apps.filter": "The application is added. To display it in the list, turn on displaying system applications in the filter settings.",
+  "alerts.application.shared": "This application is shared and not available for editing. To add another version of this app, please contact the administrator, or click 'Add', upload the APK, and rename the application.",
 
   "validation.required": "This field is required",
   "validation.minlength": "Minimum length is {{ requiredLength }} characters",
@@ -1099,6 +1100,7 @@
   "tooltip.usage.byconfigurations": "Used by configurations",
   "tooltip.usage.byapps": "Used by applications",
   "tooltip.usage.byicons": "Used by icons",
+  "tooltip.application.shared": "Shared application",
 
   "form.devices.label.params.more": "More parameters",
   "form.devices.label.params.less": "Less parameters",

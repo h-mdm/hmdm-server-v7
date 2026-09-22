@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "Erro interno do servidor. Por favor, tente novamente mais tarde.",
   "alerts.unknown.error": "Ocorreu um erro desconhecido.",
   "alerts.system.apps.filter": "O aplicativo foi adicionado. Para exibi-lo na lista, ative a exibição de aplicativos do sistema nas configurações de filtro.",
+  "alerts.application.shared": "Esta aplicação é partilhada e não está disponível para edição. Para adicionar outra versão desta aplicação, contacte o administrador ou clique em «Adicionar», carregue o APK e mude o nome da aplicação.",
 
   "validation.required": "Este campo é obrigatório",
   "validation.minlength": "O comprimento mínimo é de {{ requiredLength }} caracteres",
@@ -1093,6 +1094,7 @@
   "tooltip.usage.byconfigurations": "Usado por configurações",
   "tooltip.usage.byapps": "Usado por aplicações",
   "tooltip.usage.byicons": "Usado por ícones",
+  "tooltip.application.shared": "Aplicação partilhada",
 
   "form.devices.label.params.more": "Mais parâmetros",
   "form.devices.label.params.less": "Menos parâmetros",

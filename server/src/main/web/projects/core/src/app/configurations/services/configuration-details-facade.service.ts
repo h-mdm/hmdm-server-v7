@@ -107,14 +107,33 @@ export class ConfigurationDetailsFacadeService {
         return config;
       }
 
+      const settings = [...(config.applicationSettings || []), appSetting];
+
+      return {
+        ...config,
+        ...this.configurationCommonValue,
+        ...this.configurationDesignValue,
+        ...this.configurationMDMValue,
+        applicationSettings: settings,
+      };
+    });
+  }
+
+  updateAppSetting(original: TAppSettingsDTO, appSetting: TAppSettingsDTO): void {
+    this.markUnsavedChanges();
+
+    this._currentConfiguration.update((config) => {
+      if (!config) {
+        return config;
+      }
+
       const settings = [...(config.applicationSettings || [])];
-      if (appSetting.id) {
-        const index = settings.findIndex((s) => s.id === appSetting.id);
-        if (index !== -1) {
-          settings[index] = appSetting;
-        }
-      } else {
-        settings.push(appSetting);
+      const index = settings.findIndex(
+        (setting) => setting === original || (!!original.id && setting.id === original.id),
+      );
+
+      if (index !== -1) {
+        settings[index] = appSetting;
       }
 
       return {

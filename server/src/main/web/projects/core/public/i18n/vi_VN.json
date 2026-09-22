@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "Lỗi máy chủ nội bộ. Vui lòng thử lại sau.",
   "alerts.unknown.error": "Đã xảy ra lỗi không xác định.",
   "alerts.system.apps.filter": "Ứng dụng đã được thêm. Để hiển thị nó trong danh sách, hãy bật hiển thị ứng dụng hệ thống trong cài đặt bộ lọc.",
+  "alerts.application.shared": "Ứng dụng này được dùng chung và không thể chỉnh sửa. Để thêm phiên bản khác của ứng dụng này, vui lòng liên hệ quản trị viên, hoặc nhấp 'Thêm', tải lên tệp APK và đổi tên ứng dụng.",
 
   "validation.required": "Trường này là bắt buộc",
   "validation.minlength": "Độ dài tối thiểu là {{ requiredLength }} ký tự",
@@ -1127,6 +1128,7 @@
   "tooltip.usage.byconfigurations": "Được dùng bởi các cấu hình",
   "tooltip.usage.byapps": "Được dùng bởi các ứng dụng",
   "tooltip.usage.byicons": "Được dùng bởi các biểu tượng",
+  "tooltip.application.shared": "Ứng dụng dùng chung",
 
   "form.devices.label.params.more": "Thêm tham số",
   "form.devices.label.params.less": "Bớt tham số",

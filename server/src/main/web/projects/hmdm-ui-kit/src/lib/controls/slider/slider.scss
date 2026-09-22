@@ -20,4 +20,15 @@
     margin-left: 8px;
     font-size: 16px;
   }
+
+  &.inline {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0;
+
+    mat-slider {
+      flex: 1;
+      min-width: 0;
+    }
+  }
 }

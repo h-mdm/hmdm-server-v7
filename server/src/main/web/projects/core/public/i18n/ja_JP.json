@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "内部サーバーエラーです。後でもう一度お試しください。",
   "alerts.unknown.error": "不明なエラーが発生しました。",
   "alerts.system.apps.filter": "アプリケーションが追加されました。リストに表示するには、フィルター設定でシステムアプリケーションの表示を有効にしてください。",
+  "alerts.application.shared": "このアプリケーションは共有されているため、編集できません。このアプリの別のバージョンを追加するには、管理者に連絡するか、「追加」をクリックして APK をアップロードし、アプリケーション名を変更してください。",
 
   "validation.required": "この項目は必須です",
   "validation.minlength": "最小文字数は {{ requiredLength }} 文字です",
@@ -1093,6 +1094,7 @@
   "tooltip.usage.byconfigurations": "構成で使用",
   "tooltip.usage.byapps": "アプリケーションで使用",
   "tooltip.usage.byicons": "アイコンで使用",
+  "tooltip.application.shared": "共有アプリケーション",
 
   "form.devices.label.params.more": "その他のパラメーター",
   "form.devices.label.params.less": "少ないパラメータ",

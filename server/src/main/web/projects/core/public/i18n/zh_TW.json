@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "內部服務器錯誤。請稍後再試。",
   "alerts.unknown.error": "發生未知錯誤。",
   "alerts.system.apps.filter": "應用程式已新增。要在列表中顯示它，請在篩選器設定中啟用顯示系統應用程式。",
+  "alerts.application.shared": "此應用程式為共享應用，無法編輯。如需新增該應用的其他版本，請聯絡管理員，或點擊「新增」，上傳 APK 並重新命名該應用程式。",
 
   "validation.required": "此字段為必填項",
   "validation.minlength": "最小長度為 {{ requiredLength }} 個字符",
@@ -1094,6 +1095,7 @@
   "tooltip.usage.byconfigurations": "由配置使用",
   "tooltip.usage.byapps": "由應用程式使用",
   "tooltip.usage.byicons": "由圖示使用",
+  "tooltip.application.shared": "共享應用程式",
 
   "form.devices.label.params.more": "更多參數",
   "form.devices.label.params.less": "參數較少",

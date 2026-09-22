@@ -45,6 +45,7 @@
   "alerts.internal.server.error": "خطأ داخلي في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
   "alerts.unknown.error": "حدث خطأ غير معروف.",
   "alerts.system.apps.filter": "تمت إضافة التطبيق. لعرضه في القائمة، قم بتشغيل عرض تطبيقات النظام في إعدادات الفلتر.",
+  "alerts.application.shared": "هذا التطبيق مشترك وغير متاح للتعديل. لإضافة إصدار آخر من هذا التطبيق، يرجى الاتصال بالمسؤول، أو النقر على \"إضافة\"، ورفع ملف APK، وإعادة تسمية التطبيق.",
 
   "validation.required": "هذا الحقل مطلوب",
   "validation.minlength": "الحد الأدنى للطول هو {{ requiredLength }} حرفًا",
@@ -1094,6 +1095,7 @@
   "tooltip.usage.byconfigurations": "مستخدمة بواسطة الاعدادات",
   "tooltip.usage.byapps": "مستخدمة بواسطة التطبيقات",
   "tooltip.usage.byicons": "مستخدمة بواسطة الرموز",
+  "tooltip.application.shared": "تطبيق مشترك",
 
   "form.devices.label.params.more": "المزيد من المعلمات",
   "form.devices.label.params.less": "معلمات أقل",

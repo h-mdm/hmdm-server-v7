@@ -7,6 +7,7 @@ import { TApplicationDTO } from '../../../entity/application/types/application-d
 import { ApplicationDialogService } from '../../services/application-dialog.service';
 import { EApplicationType } from '../../../entity/application/enum/application-type.enum';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'core-application-action-cell',
@@ -23,6 +24,7 @@ import { HasPermissionDirective } from '../../../shared/directives/has-permissio
 })
 export class ApplicationActionCell extends BaseCellRenderer<TApplicationDTO, null> {
   private readonly applicationDialogService = inject(ApplicationDialogService);
+  private readonly authService = inject(AuthService);
   private readonly router: Router = inject(Router);
 
   onVersionClick(): void {
@@ -52,6 +54,14 @@ export class ApplicationActionCell extends BaseCellRenderer<TApplicationDTO, nul
   isDeleteDisabled(): boolean {
     const app = this.params().data;
     return app.deletionProhibited;
+  }
+
+  isShared(): boolean {
+    return this.params().data.common && !this.authService.currentUser()?.superAdmin;
+  }
+
+  onSharedClick(): void {
+    this.applicationDialogService.openSharedApplicationDialog();
   }
 
   isShowVersions(): boolean {
