@@ -198,6 +198,9 @@ INSTALL_FLAG_FILE="$LOCATION/hmdm_install_flag"
 cat ./install/log4j_template.xml | sed "s|_BASE_DIRECTORY_|$LOCATION|g" > $LOCATION/log4j-hmdm.xml
 chown $TOMCAT_USER:$TOMCAT_USER $LOCATION/log4j-hmdm.xml
 
+cp -r ./install/emails $LOCATION
+chown -R $TOMCAT_USER:$TOMCAT_USER $LOCATION/emails
+
 echo
 echo "Please choose the directory where supply scripts will be located."
 echo
