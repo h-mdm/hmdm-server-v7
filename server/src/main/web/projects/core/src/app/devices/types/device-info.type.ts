@@ -1,5 +1,5 @@
-import { TApplication } from './application.type';
-import { TPhoneFile } from './phone-file.type';
+import { TApplication } from '../../entity/application/types/application.type';
+import { TDeviceFile } from '../../entity/file/types/device-file.type';
 
 export type TDeviceInfo = {
   permissions: number[];
@@ -13,5 +13,5 @@ export type TDeviceInfo = {
   model: string;
   serial: string;
   applications: TApplication[];
-  files: TPhoneFile[];
+  files: TDeviceFile[];
 };

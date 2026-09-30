@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Table } from 'hmdm-ui-kit';
-import { FilesFacadeService } from '../../../main/services/files-facade.service';
+import { FilesFacadeService } from '../../services/files-facade.service';
 import { FilesTableConfig } from '../../configuration/files-table.config';
 
 @Component({

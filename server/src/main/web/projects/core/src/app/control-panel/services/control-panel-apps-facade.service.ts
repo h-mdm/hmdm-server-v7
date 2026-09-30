@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import { ApplicationService } from '../../entity/application/services/application.service';
 import { TApplicationDTO } from '../../entity/application/types/application-dto.type';
-import { ApplicationDialogService } from '../../main/services/application-dialog.service';
+import { ApplicationDialogService } from '../../applications/services/application-dialog.service';
 
 @Injectable({ providedIn: 'root' })
 export class ControlPanelAppsFacadeService {

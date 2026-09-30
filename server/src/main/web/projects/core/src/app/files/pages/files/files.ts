@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BaseComponent, LoaderDirective, MatIconModule, SearchContainer } from 'hmdm-ui-kit';
-import { FilesFacadeService } from '../../../main/services/files-facade.service';
+import { FilesFacadeService } from '../../services/files-facade.service';
 import { FilesTable } from '../../components/files-table/files-table';
 import { FilesDialogService } from '../../services/files-dialog.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs';

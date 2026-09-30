@@ -6,8 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BaseComponent, LoaderDirective, SearchContainer } from 'hmdm-ui-kit';
 import { IconTable } from '../../components/icon-table/icon-table';
-import { IconFacadeService } from '../../../main/services/icon-facade.service';
-import { IconDialogService } from '../../../main/services/icon-dialog.service';
+import { IconFacadeService } from '../../services/icon-facade.service';
+import { IconDialogService } from '../../services/icon-dialog.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 

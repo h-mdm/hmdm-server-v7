@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { TOption } from 'hmdm-ui-kit';
 import { environment } from '../../../environments/environment';
-import { TConfiguration } from '../../main/types/configuration.type';
+import { TConfiguration } from '../../entity/configuration/types/configuration.type';
 import { THttpResponse } from '../types/http-response.type';
 
 @Injectable({

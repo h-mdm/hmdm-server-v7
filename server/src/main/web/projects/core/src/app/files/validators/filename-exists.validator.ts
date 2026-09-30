@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { FilesFacadeService } from '../../main/services/files-facade.service';
+import { FilesFacadeService } from '../services/files-facade.service';
 
 export function filenameExistsValidator(): ValidatorFn {
   const fileFacadeService = inject(FilesFacadeService);

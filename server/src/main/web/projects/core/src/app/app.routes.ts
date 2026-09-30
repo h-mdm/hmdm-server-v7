@@ -72,7 +72,8 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./main/pages/dashboard/dashboard').then((m) => m.Dashboard),
+        loadComponent: () =>
+          import('./dashboard/pages/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
         path: 'profile',
@@ -94,11 +95,12 @@ export const routes: Routes = [
       {
         path: 'applications',
         loadComponent: () =>
-          import('./main/pages/applications/applications').then((m) => m.Applications),
+          import('./applications/pages/applications/applications').then((m) => m.Applications),
       },
       {
         path: 'applications/:applicationId/versions',
-        loadComponent: () => import('./main/pages/versions/versions').then((m) => m.Versions),
+        loadComponent: () =>
+          import('./applications/pages/versions/versions').then((m) => m.Versions),
       },
 
       {

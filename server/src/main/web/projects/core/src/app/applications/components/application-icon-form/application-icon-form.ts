@@ -21,8 +21,8 @@ import { EApplicationType } from '../../../entity/application/enum/application-t
 import { TApplicationType } from '../../../entity/application/types/application-type.type';
 import { ApplicationIconFormConfig } from '../../configuration/application-icon-form.config';
 import { ICON_APPLICATION_TYPES } from '../../const/icon-application-types.const';
-import { IconDialogService } from '../../services/icon-dialog.service';
-import { IconFacadeService } from '../../services/icon-facade.service';
+import { IconDialogService } from '../../../settings/services/icon-dialog.service';
+import { IconFacadeService } from '../../../settings/services/icon-facade.service';
 import { TApplicationIconFormValue } from '../../types/application-icon-form.type';
 
 @Component({

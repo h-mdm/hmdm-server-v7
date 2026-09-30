@@ -1,4 +1,4 @@
-export type TPhoneFile = {
+export type TDeviceFile = {
   lastUpdate: number;
   lastUpdateDiff?: number;
   path: string;

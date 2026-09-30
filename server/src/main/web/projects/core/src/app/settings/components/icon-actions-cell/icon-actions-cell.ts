@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BaseCellRenderer, MatButtonModule, MatIconModule } from 'hmdm-ui-kit';
-import { IconDialogService } from '../../../main/services/icon-dialog.service';
+import { IconDialogService } from '../../services/icon-dialog.service';
 import { TIconDto } from '../../../entity/icon/types/icon-dto.type';
 
 @Component({

@@ -11,7 +11,7 @@ import { GlobalLoaderService } from '../../../shared/services/global-loader.serv
 import { IdleService } from '../../../shared/services/idle.service';
 import { LanguageService } from '../../../shared/services/language.service';
 import { SettingsFacadeService } from '../../../shared/services/settings-facade.service';
-import {PushMessagesService} from '../../services/push-messages.service';
+import {PushMessagesService} from '../../../shared/services/push-messages.service';
 
 @Component({
   selector: 'core-wrapper',

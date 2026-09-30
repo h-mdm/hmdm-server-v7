@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { filter, switchMap, take } from 'rxjs';
 import { ConfirmDialog } from 'hmdm-ui-kit';
 import { TFileDTO } from '../../entity/file/types/file-dto.type';
-import { FilesFacadeService } from '../../main/services/files-facade.service';
+import { FilesFacadeService } from './files-facade.service';
 import { FilesConfigDialog } from '../components/files-config-dialog/files-config-dialog';
 import { FilesDialog } from '../components/files-dialog/files-dialog';
 import { FileService } from '../../entity/file/services/file.service';

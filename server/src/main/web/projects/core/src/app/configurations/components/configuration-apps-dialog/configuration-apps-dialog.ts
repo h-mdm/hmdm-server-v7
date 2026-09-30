@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DialogBase, DialogTemplate, MatButtonModule, TranslatePipe } from 'hmdm-ui-kit';
 import { TApplicationDTO } from '../../../entity/application/types/application-dto.type';
-import { ApplicationDialogService } from '../../../main/services/application-dialog.service';
+import { ApplicationDialogService } from '../../../applications/services/application-dialog.service';
 import { ConfigurationAppFormConfig } from '../../configs/configuration-app-form.config';
 import { ConfigurationAppForm } from '../configuration-app-form/configuration-app-form';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';

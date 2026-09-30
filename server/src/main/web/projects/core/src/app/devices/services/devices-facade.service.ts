@@ -27,7 +27,7 @@ import { GroupBulkDialog } from '../components/group-bulk-dialog/group-bulk-dial
 import { DEVICE_ONLINE_STATUS } from '../const/device-online-status-options.const';
 import { CUSTOM_TIME_VALUE } from '../const/device-time-options.const';
 import { DEVICES_SORT_MAPPER } from '../const/devices-sort-mapper.const';
-import { TConfiguration } from '../types/configuration.type';
+import { TConfiguration } from '../../entity/configuration/types/configuration.type';
 import { TDeviceFormValue } from '../types/device-form-value.type';
 import { TSearchDevicesFormValue } from '../types/search-devices-form-value.type';
 import { LicenseService } from '../../auth/services/license.service';

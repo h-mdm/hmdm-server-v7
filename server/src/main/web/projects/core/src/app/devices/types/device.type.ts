@@ -1,4 +1,4 @@
-import { TConfiguration } from './configuration.type';
+import { TConfiguration } from '../../entity/configuration/types/configuration.type';
 import { TDeviceInfo } from './device-info.type';
 
 export type TDevice = {

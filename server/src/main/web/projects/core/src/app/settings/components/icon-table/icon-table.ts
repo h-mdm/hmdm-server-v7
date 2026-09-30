@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Table } from 'hmdm-ui-kit';
 import { IconsTableConfig } from '../../configuration/icons-table.config';
-import { IconFacadeService } from '../../../main/services/icon-facade.service';
+import { IconFacadeService } from '../../services/icon-facade.service';
 
 @Component({
   selector: 'core-icon-table',
