@@ -20,5 +20,6 @@
     dialog-actions
     (cancel)="onCancel()"
     (save)="onSave()"
+    [isSaveDisabled]="saving()"
   ></hmdm-dialog-common-buttons>
 </hmdm-dialog-template>

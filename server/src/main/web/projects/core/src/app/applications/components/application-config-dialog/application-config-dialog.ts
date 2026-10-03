@@ -17,8 +17,8 @@ import {
   TConfigurationWithSelection,
 } from '../application-config-form/application-config-form';
 interface DialogData {
-  applicationId: number;
-  versionId: number;
+  applicationId?: number;
+  versionId?: number;
 }
 
 @Component({
@@ -41,6 +41,7 @@ export class ApplicationConfigDialog extends DialogBase implements OnInit {
   private readonly data = inject(MAT_DIALOG_DATA) as DialogData;
 
   configurations = this.applicationConfigFacadeService.configurations;
+  saving = this.applicationConfigFacadeService.saving;
 
   application = signal<TApplicationDTO | null>(null);
   localConfigurations = signal<TConfigurationWithSelection[]>([]);
@@ -97,18 +98,8 @@ export class ApplicationConfigDialog extends DialogBase implements OnInit {
         },
       });
     } else if (versionId) {
-      this.applicationService.getApplication(versionId).subscribe({
-        next: (app) => {
-          if (app) {
-            this.application.set(app);
-          }
-
-          this.applicationConfigFacadeService.initVersionConfigurations(versionId);
-        },
-        error: (error: any) => {
-          console.error('Failed to load application:', error);
-        },
-      });
+      // If we're here, app is type.APP and not system, so just init the rest
+      this.applicationConfigFacadeService.initVersionConfigurations(versionId);
     }
   }
 
@@ -131,19 +122,22 @@ export class ApplicationConfigDialog extends DialogBase implements OnInit {
   }
 
   override onSave(): void {
-    try {
-      const finalConfigs = this.localConfigurations().map((config) => {
-        const { selected, ...configWithoutSelection } = config;
-        return configWithoutSelection as TAppConfigurationDTO;
-      });
+    const finalConfigs = this.localConfigurations().map((config) => {
+      const { selected, ...configWithoutSelection } = config;
+      return configWithoutSelection as TAppConfigurationDTO;
+    });
 
-      this.applicationConfigFacadeService.updateAllConfigurations(finalConfigs);
+    this.applicationConfigFacadeService.updateAllConfigurations(finalConfigs);
 
-      // Save to backend
-      this.applicationConfigFacadeService.saveConfigurations(this.data.applicationId).subscribe();
-      this.dialogRef.close(true);
-    } catch (error) {
-      console.error('Failed to save configurations:', error);
-    }
+    // Same branching as in ngOnInit: links are loaded and saved either per application or per version
+    const save$ = this.data.applicationId
+      ? this.applicationConfigFacadeService.saveConfigurations(this.data.applicationId)
+      : this.applicationConfigFacadeService.saveVersionConfigurations(this.data.versionId!);
+
+    // Close only after the backend has saved the links, so the table refresh
+    // triggered on close sees the updated deletionProhibited flag
+    save$.subscribe({
+      next: () => this.dialogRef.close(true),
+    });
   }
 }

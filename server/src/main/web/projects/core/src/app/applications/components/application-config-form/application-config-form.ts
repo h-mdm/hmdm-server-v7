@@ -67,6 +67,10 @@ export class ApplicationConfigForm {
           value: EApplicationConfigAction.PROHIBIT,
           viewValue: 'form.configuration.apps.action.not.install',
         },
+        {
+          value: EApplicationConfigAction.REMOVE,
+          viewValue: 'form.configuration.apps.action.delete',
+        },
       ];
     }
 

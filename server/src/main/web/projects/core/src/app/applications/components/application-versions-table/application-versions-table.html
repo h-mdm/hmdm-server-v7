@@ -1,6 +1,14 @@
 <mat-card class="card">
   <mat-card-title class="card-title">
-    <h3>{{ application()?.name }}</h3>
+    <h3 class="card-breadcrumb">
+      <a class="card-breadcrumb-link" [routerLink]="['/home', 'applications']">
+        {{ 'breadcrumb.applications' | translate }}
+      </a>
+
+      @if (application()) {
+        <span class="card-breadcrumb-current">- {{ application()!.name }}</span>
+      }
+    </h3>
 
     <button
       class="card-button primary"

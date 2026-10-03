@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "Ada göre",
   "form.configuration.apps.sort.bypkg": "Kimliğe göre",
   "form.configuration.apps.no.apk": "yok",
-  "form.configuration.apps.show.systeam.apps": "Sistem Uygulamalarını Göster",
+  "form.configuration.apps.show.system.apps": "Önceden Yüklenmiş Uygulamaları Göster",
   "form.configuration.apps.action.select": "(seç)",
   "form.configuration.apps.action.install": "Yükle",
   "form.configuration.apps.action.prohibit": "Engelle",

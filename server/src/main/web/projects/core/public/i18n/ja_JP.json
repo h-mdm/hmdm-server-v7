@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "名前順",
   "form.configuration.apps.sort.bypkg": "ID別",
   "form.configuration.apps.no.apk": "なし",
-  "form.configuration.apps.show.systeam.apps": "システムアプリケーションを表示",
+  "form.configuration.apps.show.system.apps": "プリインストールされたアプリケーションを表示",
   "form.configuration.apps.action.select": "(選択)",
   "form.configuration.apps.action.install": "インストール",
   "form.configuration.apps.action.prohibit": "ブロック",

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonModule, MatIconModule, Table } from 'hmdm-ui-kit';
 import { map, switchMap, take, tap } from 'rxjs';
@@ -24,6 +24,7 @@ import { HasPermissionDirective } from '../../../shared/directives/has-permissio
     MatButtonModule,
     MatIconModule,
     HasPermissionDirective,
+    RouterLink,
   ],
 })
 export class ApplicationVersionsTable implements OnInit {

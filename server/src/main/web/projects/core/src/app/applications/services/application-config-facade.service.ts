@@ -3,6 +3,7 @@ import { Observable, take, tap } from 'rxjs';
 import {
   ConfigurationService,
   TLinkConfigurationsToAppRequest,
+  TLinkConfigurationsToAppVersionRequest,
 } from '../../entity/configuration/services/configuration.service';
 import { TAppConfigurationDTO } from '../../entity/configuration/types/app-configuration-dto.type';
 
@@ -65,6 +66,31 @@ export class ApplicationConfigFacadeService {
     };
 
     return this.configService.updateApplicationConfigurations(request).pipe(
+      take(1),
+      tap({
+        next: () => {
+          this._saving.set(false);
+        },
+        error: (error: any) => {
+          this._saving.set(false);
+          this._error.set(error.message || 'Failed to save configurations');
+        },
+      }),
+    );
+  }
+
+  saveVersionConfigurations(versionId: number): Observable<void> {
+    this._saving.set(true);
+    this._error.set(null);
+
+    const request: TLinkConfigurationsToAppVersionRequest = {
+      applicationVersionId: versionId,
+      // The backend replaces all links of the version with the posted ones,
+      // so "do not install" (action 0) entries must not be sent
+      configurations: this._configurations().filter((config) => config.action !== 0),
+    };
+
+    return this.configService.updateApplicationVersionConfigurations(request).pipe(
       take(1),
       tap({
         next: () => {

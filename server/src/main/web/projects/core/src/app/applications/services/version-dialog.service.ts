@@ -45,7 +45,7 @@ export class VersionDialogService {
       });
   }
 
-  openDeleteVersionDialog(versionId: number): void {
+  openDeleteVersionDialog(version: TVersionDTO): void {
     this.dialog
       .open(ConfirmDialog, {
         data: {
@@ -54,7 +54,7 @@ export class VersionDialogService {
           confirmButtonText: 'button.delete',
           cancelButtonText: 'button.cancel',
           params: {
-            applicationVersion: versionId,
+            applicationVersion: version.version,
           },
         },
       })
@@ -62,7 +62,7 @@ export class VersionDialogService {
       .pipe(
         take(1),
         filter(Boolean),
-        switchMap(() => this.versionService.deleteApplicationVersion(versionId)),
+        switchMap(() => this.versionService.deleteApplicationVersion(version.id)),
       )
       .subscribe(() => {
         this.versionFacadeService.initLast();
@@ -70,6 +70,12 @@ export class VersionDialogService {
   }
 
   openConfigurationDialog(versionId: number): void {
-    this.dialog.open(ApplicationConfigDialog, { data: { versionId } });
+    this.dialog
+      .open(ApplicationConfigDialog, { data: { versionId } })
+      .afterClosed()
+      .pipe(take(1), filter(Boolean))
+      .subscribe(() => {
+        this.versionFacadeService.initLast();
+      });
   }
 }

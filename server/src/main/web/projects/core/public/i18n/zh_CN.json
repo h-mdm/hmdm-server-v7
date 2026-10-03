@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "按名字",
   "form.configuration.apps.sort.bypkg": "按ID",
   "form.configuration.apps.no.apk": "没有任何",
-  "form.configuration.apps.show.systeam.apps": "显示系统应用程式",
+  "form.configuration.apps.show.system.apps": "显示预装应用程序",
   "form.configuration.apps.action.select": "(选择)",
   "form.configuration.apps.action.install": "安装",
   "form.configuration.apps.action.prohibit": "禁用",

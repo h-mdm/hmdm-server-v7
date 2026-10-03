@@ -10,4 +10,9 @@
       color: var(--mat-sys-on-primary),
     )
   );
+
+  // icon-overrides fixes the icon color, so mark a disabled button explicitly
+  button:disabled mat-icon {
+    color: var(--mat-sys-outline);
+  }
 }

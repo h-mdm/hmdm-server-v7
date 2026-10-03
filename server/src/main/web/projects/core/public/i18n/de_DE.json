@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "Nach Namen",
   "form.configuration.apps.sort.bypkg": "Nach ID",
   "form.configuration.apps.no.apk": "keine",
-  "form.configuration.apps.show.systeam.apps": "Systemanwendungen anzeigen",
+  "form.configuration.apps.show.system.apps": "Vorinstallierte Anwendungen anzeigen",
   "form.configuration.apps.action.select": "(auswählen)",
   "form.configuration.apps.action.install": "Installieren",
   "form.configuration.apps.action.prohibit": "Blockieren",

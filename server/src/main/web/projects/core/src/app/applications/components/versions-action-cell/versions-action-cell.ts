@@ -1,13 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { BaseCellRenderer, MatButtonModule, MatIconModule } from 'hmdm-ui-kit';
+import { MatTooltip } from '@angular/material/tooltip';
+import { BaseCellRenderer, MatButtonModule, MatIconModule, TranslatePipe } from 'hmdm-ui-kit';
 import { TVersionDTO } from '../../../entity/application/types/version-dto.type';
 import { VersionDialogService } from '../../services/version-dialog.service';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 
 @Component({
   selector: 'core-versions-action-cell',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, HasPermissionDirective],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatTooltip,
+    TranslatePipe,
+    HasPermissionDirective,
+  ],
   templateUrl: './versions-action-cell.html',
   styleUrl: './versions-action-cell.scss',
 })
@@ -25,13 +33,17 @@ export class VersionsActionCell extends BaseCellRenderer<TVersionDTO, null> {
   }
 
   onDeleteClick(): void {
-    const id = this.params().data.id;
+    const version = this.params().data;
 
-    if (!id) {
+    if (!version.id) {
       return;
     }
 
-    this.versionDialogService.openDeleteVersionDialog(id);
+    this.versionDialogService.openDeleteVersionDialog(version);
+  }
+
+  isDeleteDisabled(): boolean {
+    return this.params().data.deletionProhibited;
   }
 
   onEditClick(): void {

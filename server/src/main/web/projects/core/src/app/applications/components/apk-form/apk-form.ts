@@ -90,31 +90,37 @@ export class ApkForm extends BaseComponent implements OnInit {
     }
 
     this.initFormListeners();
+
+    if (initialValue && initialValue.type === EApplicationType.APP) {
+      this.emitFormChange();
+    }
+  }
+
+  private emitFormChange(): void {
+    if (this.uploadStatus() === 'uploading') {
+      this.formChange.emit(null);
+      return;
+    }
+
+    if (this.formGroup.invalid) {
+      this.formChange.emit(null);
+      return;
+    }
+
+    const value = this.formGroup.getRawValue();
+
+    this.formChange.emit({
+      type: EApplicationType.APP,
+      ...value,
+      filePath: this.uploadResult?.serverPath ?? '',
+      versionCode: this.uploadResult?.fileDetails?.versionCode,
+      versionExists: this.versionExists(),
+    });
   }
 
   private initFormListeners(): void {
     this.formGroup.valueChanges.pipe(this.untilDestroyed()).subscribe({
-      next: () => {
-        if (this.uploadStatus() === 'uploading') {
-          this.formChange.emit(null);
-          return;
-        }
-
-        if (this.formGroup.invalid) {
-          this.formChange.emit(null);
-          return;
-        }
-
-        const value = this.formGroup.getRawValue();
-
-        this.formChange.emit({
-          type: EApplicationType.APP,
-          ...value,
-          filePath: this.uploadResult?.serverPath ?? '',
-          versionCode: this.uploadResult?.fileDetails?.versionCode,
-          versionExists: this.versionExists(),
-        });
-      },
+      next: () => this.emitFormChange(),
     });
 
     this.formGroup.controls.system.valueChanges.pipe(this.untilDestroyed()).subscribe({

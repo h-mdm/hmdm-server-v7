@@ -394,7 +394,7 @@
   "form.configuration.apps.sort.byname": "Theo tên",
   "form.configuration.apps.sort.bypkg": "Theo ID",
   "form.configuration.apps.no.apk": "không có",
-  "form.configuration.apps.show.systeam.apps": "Hiển thị Ứng dụng Hệ thống",
+  "form.configuration.apps.show.system.apps": "Hiển thị Ứng dụng Cài sẵn",
   "form.configuration.apps.action.select": "(chọn)",
   "form.configuration.apps.action.install": "Cài đặt",
   "form.configuration.apps.action.prohibit": "Chặn",

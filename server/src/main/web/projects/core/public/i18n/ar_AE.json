@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "بالاسم",
   "form.configuration.apps.sort.bypkg": "بالمعرف",
   "form.configuration.apps.no.apk": "لا أحد",
-  "form.configuration.apps.show.systeam.apps": "إظهار تطبيقات النظام",
+  "form.configuration.apps.show.system.apps": "إظهار التطبيقات المثبتة مسبقًا",
   "form.configuration.apps.action.select": "(تحديد)",
   "form.configuration.apps.action.install": "تثبيت",
   "form.configuration.apps.action.prohibit": "منع",

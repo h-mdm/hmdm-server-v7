@@ -41,19 +41,25 @@ export class SystemActionForm extends BaseComponent implements OnInit {
     }
 
     this.formGroup.valueChanges.pipe(this.untilDestroyed()).subscribe({
-      next: () => {
-        if (this.formGroup.invalid) {
-          this.formChange.emit(null);
-          return;
-        }
+      next: () => this.emitFormChange(),
+    });
 
-        const value = this.formGroup.getRawValue();
+    if (initialValue && initialValue.type === EApplicationType.INTENT) {
+      this.emitFormChange();
+    }
+  }
 
-        this.formChange.emit({
-          type: EApplicationType.INTENT,
-          ...value,
-        });
-      },
+  private emitFormChange(): void {
+    if (this.formGroup.invalid) {
+      this.formChange.emit(null);
+      return;
+    }
+
+    const value = this.formGroup.getRawValue();
+
+    this.formChange.emit({
+      type: EApplicationType.INTENT,
+      ...value,
     });
   }
 }

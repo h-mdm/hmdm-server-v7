@@ -1,16 +1,15 @@
 <div class="cell">
-  @if (isShowVersions()) {
-    <div
-      *hmdmHasPermission="'edit_applications'"
-      class="cell-action"
-      matTooltip="{{ 'breadcrumb.application.versions' | translate }}"
-      [matTooltipShowDelay]="500"
-    >
-      <button matIconButton (click)="onVersionClick()">
-        <mat-icon>layers</mat-icon>
-      </button>
-    </div>
-  }
+  <div
+    *hmdmHasPermission="'edit_applications'"
+    class="cell-action"
+    [class.cell-action-hidden]="!isShowVersions()"
+    matTooltip="{{ 'breadcrumb.application.versions' | translate }}"
+    [matTooltipShowDelay]="500"
+  >
+    <button matIconButton (click)="onVersionClick()">
+      <mat-icon>layers</mat-icon>
+    </button>
+  </div>
 
   <div
     class="cell-action"

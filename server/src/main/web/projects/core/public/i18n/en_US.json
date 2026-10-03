@@ -402,7 +402,7 @@
   "form.configuration.apps.sort.byname": "By name",
   "form.configuration.apps.sort.bypkg": "By ID",
   "form.configuration.apps.no.apk": "none",
-  "form.configuration.apps.show.systeam.apps": "Show System Applications",
+  "form.configuration.apps.show.system.apps": "Show preinstalled applications",
   "form.configuration.apps.action.select": "(select)",
   "form.configuration.apps.action.install": "Install",
   "form.configuration.apps.action.prohibit": "Block",

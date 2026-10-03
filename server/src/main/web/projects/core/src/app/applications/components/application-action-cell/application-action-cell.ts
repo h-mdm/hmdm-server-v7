@@ -66,7 +66,7 @@ export class ApplicationActionCell extends BaseCellRenderer<TApplicationDTO, nul
 
   isShowVersions(): boolean {
     const app = this.params().data;
-    return app.type === EApplicationType.APP;
+    return app.type === EApplicationType.APP && !app.system;
   }
 
   private getId(): number | null {

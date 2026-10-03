@@ -73,6 +73,7 @@ export class ApplicationForm extends BaseComponent implements OnInit {
         iconId: this.initialValue()!.iconId || null,
         iconText: this.initialValue()!.iconText || null,
       });
+      this.iconFormValue = this.initialIconValue();
     }
 
     this.typeControl.valueChanges.pipe(this.untilDestroyed()).subscribe(() => {

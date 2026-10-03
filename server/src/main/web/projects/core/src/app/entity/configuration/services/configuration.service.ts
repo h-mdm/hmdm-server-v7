@@ -12,6 +12,11 @@ export interface TLinkConfigurationsToAppRequest {
   configurations: TAppConfigurationDTO[];
 }
 
+export interface TLinkConfigurationsToAppVersionRequest {
+  applicationVersionId: number;
+  configurations: TAppConfigurationDTO[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -44,6 +49,14 @@ export class ConfigurationService {
   updateApplicationConfigurations(request: TLinkConfigurationsToAppRequest): Observable<void> {
     return this.http
       .post<THttpResponse<void>>('rest/private/applications/configurations', request)
+      .pipe(map(() => void 0));
+  }
+
+  updateApplicationVersionConfigurations(
+    request: TLinkConfigurationsToAppVersionRequest,
+  ): Observable<void> {
+    return this.http
+      .post<THttpResponse<void>>('rest/private/applications/version/configurations', request)
       .pipe(map(() => void 0));
   }
 

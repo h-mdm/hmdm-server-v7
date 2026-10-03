@@ -396,7 +396,7 @@
   "form.configuration.apps.sort.byname": "По имени",
   "form.configuration.apps.sort.bypkg": "По ID",
   "form.configuration.apps.no.apk": "нет",
-  "form.configuration.apps.show.systeam.apps": "Показать системные",
+  "form.configuration.apps.show.system.apps": "Показать предустановленные",
   "form.configuration.apps.action.select": "(выберите)",
   "form.configuration.apps.action.install": "Установить",
   "form.configuration.apps.action.prohibit": "Блокировать",
