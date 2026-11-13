@@ -66,6 +66,9 @@ public class CustomerDAO {
 
     private final Logger log = LoggerFactory.getLogger(CustomerDAO.class);
 
+    /** Minimum length of a generated tenant admin password, applied if the master setting is lower. */
+    private static final int MIN_TENANT_PASSWORD_LENGTH = 12;
+
     private final CustomerMapper mapper;
     private final ConfigurationMapper configurationMapper;
     private final ApplicationMapper applicationMapper;
@@ -187,7 +190,9 @@ public class CustomerDAO {
             final Settings masterSettings = this.settingDAO.getSettings();
 
             // Create a customer admin record
-            String password = PasswordUtil.generatePassword(masterSettings.getPasswordLength(), masterSettings.getPasswordStrength());
+            String password = PasswordUtil.generatePassword(
+                    Math.max(masterSettings.getPasswordLength(), MIN_TENANT_PASSWORD_LENGTH),
+                    Math.max(masterSettings.getPasswordStrength(), PasswordUtil.PASS_STRENGTH_ALPHADIGIT));
 
             UserRole orgAdminRole = new UserRole();
             orgAdminRole.setId(this.orgAdminRoleId);
