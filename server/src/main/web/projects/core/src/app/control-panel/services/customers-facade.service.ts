@@ -2,7 +2,7 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { ConfirmDialog, TTableSortState } from 'hmdm-ui-kit';
+import { ConfirmDialog, InformDialog, TTableSortState } from 'hmdm-ui-kit';
 import { filter, finalize, switchMap, take, takeUntil } from 'rxjs';
 import { CustomerService } from '../../entity/customer/services/customer.service';
 import { TCustomerDTO } from '../../entity/customer/types/customer-dto.type';
@@ -11,6 +11,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snack-bar.service';
 import { AdminCredentialsDialog } from '../components/admin-credentials-dialog/admin-credentials-dialog';
 import { CustomerFormDialog } from '../components/customer-form-dialog/customer-form-dialog';
+import { OrphanedFilesDialog } from '../components/orphaned-files-dialog/orphaned-files-dialog';
 import { PasswordChangeDialog } from '../components/password-change-dialog/password-change-dialog';
 import { TCustomerFormValue } from '../types/customer-form-value.type';
 import { TCustomer } from '../types/customer.type';
@@ -137,6 +138,39 @@ export class CustomersFacadeService {
           .remove(id)
           .pipe(take(1))
           .subscribe(() => this.searchCustomers());
+      });
+  }
+
+  /**
+   * Finds orphaned APK files in the customer's storage directory
+   * and deletes them if the user confirms.
+   */
+  cleanupCustomerFiles(customer: TCustomer): void {
+    if (!customer.id) return;
+    const id = customer.id;
+
+    this.customerService
+      .getOrphanedFiles(id)
+      .pipe(take(1))
+      .subscribe((files) => {
+        if (!files) return;
+        if (files.length === 0) {
+          this.dialog.open(InformDialog, { data: { message: 'alerts.cleanup.nothing' } });
+          return;
+        }
+        this.dialog
+          .open(OrphanedFilesDialog, { minWidth: '480px', data: { customerName: customer.name, files } })
+          .afterClosed()
+          .pipe(
+            take(1),
+            filter((selected): selected is string[] => !!selected?.length),
+            switchMap((selected) => this.customerService.removeOrphanedFiles(id, selected)),
+          )
+          .subscribe((deleted) => {
+            if (deleted != null) {
+              this.snackBarService.success('success.cleanup.done');
+            }
+          });
       });
   }
 

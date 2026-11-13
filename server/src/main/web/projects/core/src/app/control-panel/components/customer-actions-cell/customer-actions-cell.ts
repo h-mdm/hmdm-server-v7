@@ -25,6 +25,9 @@ import { TCustomer } from '../../types/customer.type';
       <button matIconButton [matTooltip]="'button.login' | translate" (click)="onLoginAsClick()">
         <mat-icon>login</mat-icon>
       </button>
+      <button matIconButton [matTooltip]="'button.cleanup.files' | translate" (click)="onCleanupClick()">
+        <mat-icon>cleaning_services</mat-icon>
+      </button>
       <button matIconButton [matTooltip]="'button.delete' | translate" (click)="onDeleteClick()">
         <mat-icon>delete</mat-icon>
       </button>
@@ -44,6 +47,10 @@ export class CustomerActionsCell extends BaseCellRenderer<TCustomer, null> {
 
   onLoginAsClick(): void {
     this.customersFacadeService.loginAsCustomer(this.params().data);
+  }
+
+  onCleanupClick(): void {
+    this.customersFacadeService.cleanupCustomerFiles(this.params().data);
   }
 
   onDeleteClick(): void {

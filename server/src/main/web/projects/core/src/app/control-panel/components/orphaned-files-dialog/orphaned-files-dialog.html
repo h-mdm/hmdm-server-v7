@@ -1,0 +1,32 @@
+<hmdm-dialog-template title="{{ 'button.cleanup.files' | translate }}: {{ data.customerName }}">
+  <mat-checkbox
+    class="dialog-select-all"
+    [checked]="allSelected()"
+    [indeterminate]="someSelected()"
+    (change)="toggleAll($event.checked)"
+  >
+    {{ 'table.filtering.check.all' | translate }}
+  </mat-checkbox>
+
+  <ul class="dialog-files">
+    @for (file of data.files; track file) {
+      <li>
+        <mat-checkbox [checked]="selected().has(file)" (change)="toggle(file, $event.checked)">
+          {{ file }}
+        </mat-checkbox>
+      </li>
+    }
+  </ul>
+
+  <p class="dialog-message">{{ 'question.delete.orphaned.files' | translate }}</p>
+
+  <div class="dialog-actions" dialog-actions>
+    <button matButton class="dialog-btn primary" (click)="onCancel()">
+      {{ 'button.no' | translate }}
+    </button>
+
+    <button matButton="filled" class="dialog-btn primary" [disabled]="selected().size === 0" (click)="onSave()">
+      {{ 'button.yes' | translate }}
+    </button>
+  </div>
+</hmdm-dialog-template>

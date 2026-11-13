@@ -59,4 +59,18 @@ export class CustomerService {
       .get<THttpResponse<TUserDTO>>(`rest/private/customers/impersonate/${id}`)
       .pipe(map((response) => response.data));
   }
+
+  /** Gets the names of orphaned APK files in the customer's storage directory. */
+  getOrphanedFiles(id: number): Observable<string[]> {
+    return this.http
+      .get<THttpResponse<string[]>>(`rest/private/customers/${id}/orphanedFiles`)
+      .pipe(map((response) => response.data));
+  }
+
+  /** Deletes the specified orphaned files from the customer's storage directory; returns the number of deleted files. */
+  removeOrphanedFiles(id: number, fileNames: string[]): Observable<number> {
+    return this.http
+      .post<THttpResponse<number>>(`rest/private/customers/${id}/orphanedFiles/remove`, fileNames)
+      .pipe(map((response) => response.data));
+  }
 }

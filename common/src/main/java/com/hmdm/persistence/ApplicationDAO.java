@@ -29,6 +29,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -813,6 +814,50 @@ public class ApplicationDAO extends AbstractLinkedDAO<Application, ApplicationCo
                 version.setSize(getLocalFilesSize(customer, getVersionUrls(version)));
             }
         });
+    }
+
+    /**
+     * <p>Gets the names of APK/XAPK files in the top level of the customer's files directory
+     * which are not referenced by the customer's application versions, configuration launcher URLs,
+     * external files or files linked to configurations.</p>
+     *
+     * @param customer a customer owning the files.
+     * @return a sorted list of orphaned file names.
+     */
+    public List<String> getOrphanedFiles(Customer customer) {
+        final String customerDir = customer.getFilesDir();
+        final File root = customerDir != null && !customerDir.isEmpty()
+                ? Path.of(filesDirectory, customerDir).toFile()
+                : Path.of(filesDirectory).toFile();
+
+        final Set<String> urls = new HashSet<>();
+        for (ApplicationVersion version : this.mapper.getCustomerApplicationVersionUrls(customer.getId())) {
+            urls.addAll(getVersionUrls(version));
+        }
+        urls.addAll(this.mapper.getCustomerFreeTextUrls(customer.getId()));
+
+        final Set<String> usedFiles = new HashSet<>(this.mapper.getCustomerConfigurationFilePaths(customer.getId()));
+        for (String url : urls) {
+            // Some stored URLs contain duplicated slashes, collapse them (except in the protocol part)
+            final String normalizedUrl = url.trim().replaceAll("(?<!:)/{2,}", "/");
+            final String path = FileUtil.translateURLToLocalFilePath(customer, normalizedUrl, baseUrl);
+            if (path != null && new File(root, path).isFile()) {
+                usedFiles.add(path);
+            }
+        }
+
+        final File[] files = root.listFiles(file -> {
+            final String name = file.getName().toLowerCase();
+            return file.isFile() && (name.endsWith(".apk") || name.endsWith(".xapk"));
+        });
+        if (files == null) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(files)
+                .map(File::getName)
+                .filter(name -> !usedFiles.contains(name))
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     /**

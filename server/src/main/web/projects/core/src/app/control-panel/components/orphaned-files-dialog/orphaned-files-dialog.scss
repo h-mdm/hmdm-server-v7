@@ -1,0 +1,26 @@
+.dialog {
+  &-select-all {
+    display: block;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  &-files {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  &-message {
+    margin: 16px 0 0;
+  }
+
+  &-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+  }
+}

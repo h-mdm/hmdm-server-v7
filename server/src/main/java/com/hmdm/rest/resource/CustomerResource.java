@@ -26,11 +26,14 @@ import com.hmdm.session.IHmdmSession;
 import com.hmdm.session.IHmdmSessionProvider;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import com.hmdm.persistence.ApplicationDAO;
 import com.hmdm.persistence.CustomerDAO;
 import com.hmdm.persistence.UnsecureDAO;
 import com.hmdm.persistence.UserDAO;
 import com.hmdm.persistence.domain.Customer;
+import com.hmdm.persistence.domain.UploadedFile;
 import com.hmdm.persistence.domain.User;
+import com.hmdm.persistence.mapper.UploadedFileMapper;
 import com.hmdm.rest.json.CustomerSearchRequest;
 import com.hmdm.rest.json.PaginatedData;
 import com.hmdm.rest.json.Response;
@@ -52,8 +55,11 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,6 +79,9 @@ public class CustomerResource {
     private UserDAO userDAO;
     private MailchimpService mailchimpService;
     private IHmdmSessionProvider sessionProvider;
+    private ApplicationDAO applicationDAO;
+    private UploadedFileMapper uploadedFileMapper;
+    private String filesDirectory;
 
     public CustomerResource() {
     }
@@ -85,12 +94,18 @@ public class CustomerResource {
                             UnsecureDAO unsecureDAO,
                             UserDAO userDAO,
                             MailchimpService mailchimpService,
-                            @Named("session.class") IHmdmSessionProvider sessionProvider) {
+                            @Named("session.class") IHmdmSessionProvider sessionProvider,
+                            ApplicationDAO applicationDAO,
+                            UploadedFileMapper uploadedFileMapper,
+                            @jakarta.inject.Named("files.directory") String filesDirectory) {
         this.customerDAO = customerDAO;
         this.unsecureDAO = unsecureDAO;
         this.userDAO = userDAO;
         this.mailchimpService = mailchimpService;
         this.sessionProvider = sessionProvider;
+        this.applicationDAO = applicationDAO;
+        this.uploadedFileMapper = uploadedFileMapper;
+        this.filesDirectory = filesDirectory;
     }
 
     @GET
@@ -283,6 +298,85 @@ public class CustomerResource {
             }
         } catch (Exception e) {
             log.error("Unexpected error when impersonating administrator for customer account: #{}", id, e);
+            return Response.INTERNAL_ERROR();
+        }
+    }
+
+    /**
+     * <p>Gets the list of orphaned APK/XAPK files in the customer's files directory.</p>
+     *
+     * @param id a customer ID.
+     * @return a sorted list of orphaned file names.
+     */
+    @GET
+    @Path("/{id}/orphanedFiles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrphanedFiles(@PathParam("id") Integer id) {
+        if (!SecurityContext.get().isSuperAdmin()) {
+            log.warn("Failed to get orphaned files: the user must be super admin");
+            return Response.PERMISSION_DENIED();
+        }
+        try {
+            final Customer customer = this.customerDAO.findById(id);
+            if (customer == null) {
+                return Response.ERROR("alerts.not.found");
+            }
+            return Response.OK(this.applicationDAO.getOrphanedFiles(customer));
+        } catch (Exception e) {
+            log.error("Unexpected error when getting orphaned files of customer account #{}", id, e);
+            return Response.INTERNAL_ERROR();
+        }
+    }
+
+    /**
+     * <p>Deletes the specified orphaned files from the customer's files directory.</p>
+     * <p>Only files which are still orphaned are deleted.</p>
+     *
+     * @param id a customer ID.
+     * @param fileNames names of the files to delete.
+     * @return a number of deleted files.
+     */
+    @POST
+    @Path("/{id}/orphanedFiles/remove")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeOrphanedFiles(@PathParam("id") Integer id, List<String> fileNames) {
+        if (!SecurityContext.get().isSuperAdmin()) {
+            log.warn("Failed to remove orphaned files: the user must be super admin");
+            return Response.PERMISSION_DENIED();
+        }
+        try {
+            final Customer customer = this.customerDAO.findById(id);
+            if (customer == null) {
+                return Response.ERROR("alerts.not.found");
+            }
+            final String customerDir = customer.getFilesDir();
+            final File root = customerDir != null && !customerDir.isEmpty()
+                    ? Paths.get(filesDirectory, customerDir).toFile()
+                    : Paths.get(filesDirectory).toFile();
+
+            // Only the files which are still orphaned can be deleted
+            final List<String> orphanedFiles = this.applicationDAO.getOrphanedFiles(customer);
+            int deleted = 0;
+            for (String fileName : fileNames) {
+                if (!orphanedFiles.contains(fileName)) {
+                    continue;
+                }
+                final File file = new File(root, fileName);
+                if (file.delete()) {
+                    deleted++;
+                    log.info("Orphaned file {} of customer {} deleted", file.getAbsolutePath(), customer.getName());
+                    UploadedFile uploadedFile;
+                    while ((uploadedFile = this.uploadedFileMapper.findByPath(customer.getId(), fileName)) != null) {
+                        this.uploadedFileMapper.delete(uploadedFile.getId());
+                    }
+                } else {
+                    log.warn("Failed to delete orphaned file {} of customer {}", file.getAbsolutePath(), customer.getName());
+                }
+            }
+            return Response.OK(deleted);
+        } catch (Exception e) {
+            log.error("Unexpected error when removing orphaned files of customer account #{}", id, e);
             return Response.INTERNAL_ERROR();
         }
     }
