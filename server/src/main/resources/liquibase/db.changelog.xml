@@ -2659,4 +2659,14 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="17.11.26-20:11" author="max77" context="common">
+        <comment>Restore the edit_device_desc permission description overwritten by the init script</comment>
+        <sql>
+            UPDATE permissions SET description='Can edit the device description'
+            WHERE name='edit_device_desc' AND description='Access to image removal (image plugin)';
+        </sql>
+        <rollback>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
