@@ -11,9 +11,6 @@ UPDATE permissions SET description='Super-administrator functions for the whole 
 UPDATE permissions SET description='Access to system settings' WHERE id=2;
 UPDATE permissions SET description='Access to configurations, applications and files' WHERE id=3;
 UPDATE permissions SET description='Access to devices' WHERE id=4;
-UPDATE permissions SET description='Access to image removal (image plugin)' WHERE id=100;
-
-UPDATE plugins SET name='Images', description='Retrieve images from devices' WHERE id=1;
 
 INSERT INTO settings (id, backgroundcolor, textcolor, backgroundimageurl, iconsize, desktopheader, customerid, usedefaultlanguage, language) VALUES (1, '#678ca6', '#ffffff', NULL, 'SMALL', 'NO_HEADER', 1, true, NULL);
 
