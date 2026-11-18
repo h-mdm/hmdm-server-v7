@@ -1,5 +1,5 @@
 import { inject, signal, WritableSignal } from '@angular/core';
-import { Observable, take, tap } from 'rxjs';
+import { catchError, forkJoin, Observable, of, take, tap } from 'rxjs';
 import {
   ConfigurationService,
   TLinkConfigurationsToAppRequest,
@@ -24,9 +24,13 @@ export class ApplicationConfigFacadeService {
     this.loadConfigurations(applicationId);
   }
 
-  initVersionConfigurations(versionId: number) {
+  /**
+   * @param prefillFromApplicationId when set ("Auto Update" checked on a new version, as in v5),
+   *        each configuration gets the action the application currently has in it
+   */
+  initVersionConfigurations(versionId: number, prefillFromApplicationId?: number) {
     console.log('versionId', versionId);
-    this.loadVersionConfigurations(versionId);
+    this.loadVersionConfigurations(versionId, prefillFromApplicationId);
   }
 
   updateConfiguration(configId: number, updates: Partial<TAppConfigurationDTO>): void {
@@ -125,18 +129,28 @@ export class ApplicationConfigFacadeService {
       });
   }
 
-  private loadVersionConfigurations(versionId: number): void {
+  private loadVersionConfigurations(versionId: number, prefillFromApplicationId?: number): void {
     this._loading.set(true);
     this._error.set(null);
 
-    this.configService
-      .getConfigurationsPerVersion(versionId)
+    // Without prefill, the current application links are not needed
+    const appConfigs$ = prefillFromApplicationId
+      ? this.configService.getConfigurationsPerApp(prefillFromApplicationId).pipe(
+          // A failed prefill must not prevent the manual selection of configurations
+          catchError((error: any) => {
+            console.error('Error loading application configurations for auto update:', error);
+            return of([] as TAppConfigurationDTO[]);
+          }),
+        )
+      : of([] as TAppConfigurationDTO[]);
+
+    forkJoin([this.configService.getConfigurationsPerVersion(versionId), appConfigs$])
       .pipe(take(1))
       .subscribe({
-        next: (configs) => {
-          console.log('Loaded version configurations:', configs);
+        next: ([versionConfigs, appConfigs]) => {
+          console.log('Loaded version configurations:', versionConfigs);
 
-          this._configurations.set(configs);
+          this._configurations.set(this.prefillActions(versionConfigs, appConfigs));
           this._loading.set(false);
         },
         error: (error: any) => {
@@ -144,5 +158,32 @@ export class ApplicationConfigFacadeService {
           console.error('Error loading configurations:', error);
         },
       });
+  }
+
+  // v5 "Auto Update": a new version is linked to no configuration ("Do not install" everywhere),
+  // so copy the action the application has in each configuration and notify the devices
+  // of every configuration actually using it. Nothing is saved until the user confirms.
+  private prefillActions(
+    versionConfigs: TAppConfigurationDTO[],
+    appConfigs: TAppConfigurationDTO[],
+  ): TAppConfigurationDTO[] {
+    if (!appConfigs.length) {
+      return versionConfigs;
+    }
+
+    const appActions = new Map(appConfigs.map((link) => [link.configurationId, link.action]));
+
+    return versionConfigs.map((config) => {
+      const action = appActions.get(config.configurationId);
+      if (action === undefined) {
+        return config;
+      }
+      return {
+        ...config,
+        action,
+        remove: action === 2,
+        notify: action !== 0,
+      };
+    });
   }
 }

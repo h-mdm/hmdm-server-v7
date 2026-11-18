@@ -15,6 +15,11 @@ import { TVersionDTO } from '../../../entity/application/types/version-dto.type'
 import { TVersionFormValue } from '../../types/version-form.type';
 import { AddVersionForm } from '../add-version-form/add-version-form';
 
+export type TVersionDialogResult = {
+  version: TVersionDTO;
+  autoUpdate: boolean;
+};
+
 @Component({
   selector: 'core-version-dialog',
   templateUrl: './version-dialog.html',
@@ -71,9 +76,14 @@ export class VersionDialog extends DialogBase implements OnInit {
 
         this.applicationService.createApplicationVersion(request).subscribe({
           next: (response) => {
-            result = response;
             this.saving.set(false);
-            this.dialogRef.close(result);
+            // The backend ignores autoUpdate: it is applied by the configurations dialog
+            // opened next (see VersionDialogService.openAddVersionDialog)
+            const dialogResult: TVersionDialogResult = {
+              version: response,
+              autoUpdate: !!formData.autoUpdate,
+            };
+            this.dialogRef.close(dialogResult);
           },
           error: (error: any) => {
             this.saving.set(false);

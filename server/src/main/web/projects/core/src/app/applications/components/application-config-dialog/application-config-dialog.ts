@@ -19,6 +19,8 @@ import {
 interface DialogData {
   applicationId?: number;
   versionId?: number;
+  // Version mode only: prefill the actions from this application's current links ("Auto Update")
+  prefillFromApplicationId?: number;
 }
 
 @Component({
@@ -99,7 +101,10 @@ export class ApplicationConfigDialog extends DialogBase implements OnInit {
       });
     } else if (versionId) {
       // If we're here, app is type.APP and not system, so just init the rest
-      this.applicationConfigFacadeService.initVersionConfigurations(versionId);
+      this.applicationConfigFacadeService.initVersionConfigurations(
+        versionId,
+        this.data.prefillFromApplicationId,
+      );
     }
   }
 

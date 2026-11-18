@@ -6,7 +6,7 @@ import { ApplicationService } from '../../entity/application/services/applicatio
 import { TVersionDTO } from '../../entity/application/types/version-dto.type';
 import { ApplicationConfigDialog } from '../components/application-config-dialog/application-config-dialog';
 import { EditVersionDialog } from '../components/edit-version-dialog/edit-version-dialog';
-import { VersionDialog } from '../components/version-dialog/version-dialog';
+import { TVersionDialogResult, VersionDialog } from '../components/version-dialog/version-dialog';
 import { VersionFacadeService } from './version-facade.service';
 import { ApplicationFacadeService } from './application-facade.service';
 
@@ -25,9 +25,18 @@ export class VersionDialogService {
       })
       .afterClosed()
       .pipe(take(1), filter(Boolean))
-      .subscribe(() => {
+      .subscribe((result: TVersionDialogResult) => {
         this.versionFacadeService.initLast();
         this.applicationFacadeService.markForReload();
+
+        // As in v5: a new version is followed by the choice of its configurations,
+        // prefilled from the application's current links when "Auto Update" is checked
+        if (result.version?.id) {
+          this.openConfigurationDialog(
+            result.version.id,
+            result.autoUpdate ? applicationId : undefined,
+          );
+        }
       });
   }
 
@@ -74,9 +83,9 @@ export class VersionDialogService {
       });
   }
 
-  openConfigurationDialog(versionId: number): void {
+  openConfigurationDialog(versionId: number, prefillFromApplicationId?: number): void {
     this.dialog
-      .open(ApplicationConfigDialog, { data: { versionId } })
+      .open(ApplicationConfigDialog, { data: { versionId, prefillFromApplicationId } })
       .afterClosed()
       .pipe(take(1), filter(Boolean))
       .subscribe(() => {
