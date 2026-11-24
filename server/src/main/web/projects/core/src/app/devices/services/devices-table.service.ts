@@ -24,6 +24,26 @@ export class DevicesTableService {
       return;
     }
 
+    if (!device.oldNumber) {
+      this.openEditDialogFor(device, id);
+      return;
+    }
+
+    // The number change may have been completed since the list was loaded: refresh its state
+    this.deviceService
+      .getDeviceByNumber(device.number)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) =>
+          this.openEditDialogFor(
+            response.status === 'OK' ? { ...device, oldNumber: response.data?.oldNumber ?? null } : device,
+            id,
+          ),
+        error: () => this.openEditDialogFor(device, id),
+      });
+  }
+
+  private openEditDialogFor(device: TDevice, id: number): void {
     const dialogRef = this.dialog.open(DevicesFormDialog, {
       data: device,
       minWidth: '400px',
@@ -33,7 +53,23 @@ export class DevicesTableService {
       .afterClosed()
       .pipe(take(1), filter(Boolean))
       .subscribe((result) => {
-        this.deviceFacadeService.updateDevice(result, id);
+        // Changing the number of an enrolled device requires a migration:
+        // the device keeps requesting the config by the old number until it gets the new one
+        if (!device.oldNumber && result.number !== device.number && device.lastUpdate > 0) {
+          this.dialog
+            .open(ConfirmDialog, {
+              data: {
+                message: 'form.device.migration.warning',
+                confirmButtonText: 'button.yes',
+                cancelButtonText: 'button.cancel',
+              },
+            })
+            .afterClosed()
+            .pipe(take(1), filter(Boolean))
+            .subscribe(() => this.deviceFacadeService.updateDevice(result, id, device.number));
+          return;
+        }
+        this.deviceFacadeService.updateDevice(result, id, device.oldNumber ?? null);
       });
   }
 

@@ -152,6 +152,10 @@ public class DeviceInfoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/device/{deviceNumber}")
     public Response getDeviceDetailedInfo(@PathParam("deviceNumber") String deviceNumber) {
+        if (!SecurityContext.get().hasPermission("plugin_deviceinfo_access")) {
+            logger.error("Unauthorized attempt to get device info");
+            return Response.PERMISSION_DENIED();
+        }
         try {
             Device dbDevice = this.deviceDAO.getDeviceByNumber(deviceNumber);
             if (dbDevice == null) {
@@ -225,6 +229,10 @@ public class DeviceInfoResource {
     @Path("/searchDynamic")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhotos(DynamicInfoFilter filter) {
+        if (!SecurityContext.get().hasPermission("plugin_deviceinfo_access")) {
+            logger.error("Unauthorized attempt to search dynamic device info");
+            return Response.PERMISSION_DENIED();
+        }
         try {
             final String deviceNumber = filter.getDeviceNumber();
 

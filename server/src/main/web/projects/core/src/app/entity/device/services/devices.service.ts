@@ -30,6 +30,12 @@ export class DevicesService {
     );
   }
 
+  getDeviceByNumber(number: string): Observable<THttpResponse<{ oldNumber?: string | null }>> {
+    return this.httpClient.get<THttpResponse<{ oldNumber?: string | null }>>(
+      `rest/private/devices/number/${encodeURIComponent(number)}`,
+    );
+  }
+
   createDevice(body: TDeviceDTO): Observable<THttpResponse<null>> {
     return this.httpClient.put<THttpResponse<null>>(`rest/private/devices`, body);
   }

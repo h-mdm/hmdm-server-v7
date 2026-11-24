@@ -160,10 +160,11 @@ export class DevicesFacadeService {
       });
   }
 
-  updateDevice(data: TDeviceFormValue, id: number): void {
+  updateDevice(data: TDeviceFormValue, id: number, oldNumber: string | null = null): void {
     const body: TDeviceDTO = {
       ...data,
       id,
+      oldNumber,
       groups: data.groups ? data.groups.map((groupId) => ({ id: groupId })) : [],
     };
 

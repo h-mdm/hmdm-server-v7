@@ -2,6 +2,7 @@
   <hmdm-text-input
     label="{{ 'table.heading.device.device.number' | translate }}"
     formControlName="number"
+    [help]="initialData()?.oldNumber ? ('form.device.number.locked' | translate) : ''"
   ></hmdm-text-input>
 
   <hmdm-textarea-input

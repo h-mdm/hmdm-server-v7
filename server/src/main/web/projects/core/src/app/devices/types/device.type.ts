@@ -20,4 +20,5 @@ export type TDevice = {
   custom1?: string;
   custom2?: string;
   custom3?: string;
+  oldNumber?: string | null;
 };

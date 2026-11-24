@@ -416,6 +416,13 @@ public class DeviceResource {
                                                   @Parameter(description = "Device ID", schema = @Schema(type = "integer"))
                                                       Integer id,
                                                   List<ApplicationSetting> applicationSettings) {
+        final boolean canEditDevices = SecurityContext.get().hasPermission("edit_devices");
+
+        if (!canEditDevices) {
+            log.error("Unauthorized attempt to save device application settings",
+                    SecurityException.onCustomerDataAccessViolation(id, "device"));
+            return Response.PERMISSION_DENIED();
+        }
         try {
             this.deviceDAO.saveDeviceApplicationSettings(id, applicationSettings);
             return Response.OK();
@@ -434,6 +441,13 @@ public class DeviceResource {
     @Path("/{id}/applicationSettings/notify")
     @Produces(MediaType.APPLICATION_JSON)
     public Response notifyDevicesOnUpdate(@PathParam("id") Integer id) {
+        final boolean canEditDevices = SecurityContext.get().hasPermission("edit_devices");
+
+        if (!canEditDevices) {
+            log.error("Unauthorized attempt to notify device on application settings update",
+                    SecurityException.onCustomerDataAccessViolation(id, "device"));
+            return Response.PERMISSION_DENIED();
+        }
         try {
             this.pushService.notifyDeviceOnApplicationSettingUpdate(id);
             return Response.OK();

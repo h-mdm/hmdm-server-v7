@@ -54,6 +54,10 @@ export class DeviceForm {
       this.formGroup.controls.custom3.setValue(data.custom3 ?? '');
       this.formGroup.controls.configurationId.setValue(data.configuration.id ?? null);
       this.formGroup.controls.groups.setValue(data.groups.map((group) => group.id));
+      if (data.oldNumber) {
+        // Previous number change is not completed yet
+        this.formGroup.controls.number.disable();
+      }
     }
 
     this.formGroup.valueChanges.subscribe(() => {

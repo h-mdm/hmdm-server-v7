@@ -9,4 +9,5 @@ export type TDeviceDTO = {
   custom1: string | null;
   custom2: string | null;
   custom3: string | null;
+  oldNumber?: string | null;
 };
